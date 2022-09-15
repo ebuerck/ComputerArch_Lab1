@@ -419,9 +419,14 @@ char* returnRFormat(char* instruction) {
 	return rs;
 }
 
-char* returnRegister(char* reg){
-
-
+char* returnRegister(char* register){
+	switch(register) {
+		case "00000": {
+			return "$zero";
+		}
+	
+	}
+	return NULL;
 }
 
 /************************************************************/
