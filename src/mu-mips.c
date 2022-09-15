@@ -402,6 +402,91 @@ char FindFormat(char* instruction)
 	}
 }
 
+char* GetRFunction(char* instruction)
+{
+	if(!strcmp(instruction, "100000"))
+	{
+		return "ADD";
+	}
+	if(!strcmp(instruction, "100001"))
+	{
+		return "ADDU";
+	}
+	if(!strcmp(instruction, "100010"))
+	{
+		return "SUB";
+	}
+	if(!strcmp(instruction, "100011"))
+	{
+		return "SUBU";
+	}
+	if(!strcmp(instruction, "011000"))
+	{
+		return "MULT";
+	}
+	if(!strcmp(instruction, "011001"))
+	{
+		return "MULTU";
+	}
+	if(!strcmp(instruction, "011010"))
+	{
+		return "DIV";
+	}
+	if(!strcmp(instruction, "011011"))
+	{
+		return "DIVU";
+	}
+	if(!strcmp(instruction, "100100"))
+	{
+		return "AND";
+	}
+	if(!strcmp(instruction, "100101"))
+	{
+		return "OR";
+	}
+	if(!strcmp(instruction, "100110"))
+	{
+		return "XOR";
+	}
+	if(!strcmp(instruction, "100111"))
+	{
+		return "NOR";
+	}
+	if(!strcmp(instruction, "101010"))
+	{
+		return "SLT";
+	}
+	if(!strcmp(instruction, "000000"))
+	{
+		return "SLL";
+	}
+	if(!strcmp(instruction, "000010"))
+	{
+		return "SRL";
+	}
+	if(!strcmp(instruction, "000011"))
+	{
+		return "SRA";
+	}
+	if(!strcmp(instruction, "010000"))
+	{
+		return "MFHI";
+	}
+	if(!strcmp(instruction, "010010"))
+	{
+		return "MFLO";
+	}
+	if(!strcmp(instruction, "010001"))
+	{
+		return "MTHI";
+	}
+	if(!strcmp(instruction, "010011"))
+	{
+		return "MTLO";
+	}
+}
+
+
 char* returnRFormat(char* instruction) {
 	char rs[6];
 	printf("fullbinay is %s\n", instruction);
