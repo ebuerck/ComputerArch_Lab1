@@ -605,63 +605,42 @@ char* returnRFormat(char* instruction) {
 	strncpy(rd, &instruction[16], 5);
 	rd[5] = '\0';
 	printf("rd is %s\n", rd);
-	return rs;
+	return NULL;
 }
 
-char* returnRegister(char* register){
-	switch(register) {
-		case "00000": {
-			return "$zero";
-		}
-		case "00001": {
-			return: "$at";
-		}
-		case "00010": {
-			return: "$v0"
-		}
-		case "00011": {
-			return: "$v1";
-		}
-		case "00100": {
-			return: "$a0";
-		}
-		case "00101": {
-			return: "$a1";
-		}
-		case "00110": {
-			return: "$a2";
-		}
-		case "00111": {
-			return: "$a3";
-		}
-		case "01000": {
-			return: "$t0";
-		}
-		case "01001": {
-			return: "$t1";		
-		}
-		case "01010": {
-			return: "$t2";
-		}
-		case "01011": {
-			return: "$t3";
-		}
-		case "01100": {
-			return: "$t4";
-		}
-		case "01101": {
-			return: "$t5";
-		}
-		case "01110": {
-			return: "$t6";
-		}
-		case "01111": {
-			return: "$t7";
-		}
-	
-	
-	
-	}
+char* returnRegister(char* reg){
+	if (!strcmp(reg, "00000")) return "$zero";
+	if (!strcmp(reg, "00001")) return "$at";
+	if (!strcmp(reg, "00010")) return "$v0";
+	if (!strcmp(reg, "00011")) return "$v1";
+	if (!strcmp(reg, "00100")) return "$a0";
+	if (!strcmp(reg, "00101")) return "$a1";
+	if (!strcmp(reg, "00110")) return "$a2";
+	if (!strcmp(reg, "00111")) return "$a3";
+	if (!strcmp(reg, "01000")) return "$t0";
+	if (!strcmp(reg, "01001")) return "$t1";
+	if (!strcmp(reg, "01010")) return "$t2";
+	if (!strcmp(reg, "01011")) return "$t3";
+	if (!strcmp(reg, "01100")) return "$t4";
+	if (!strcmp(reg, "01101")) return "$t5";
+	if (!strcmp(reg, "01110")) return "$t6";
+	if (!strcmp(reg, "01111")) return "$t7";
+	if (!strcmp(reg, "10000")) return "$s0";
+	if (!strcmp(reg, "10001")) return "$s1";
+	if (!strcmp(reg, "10010")) return "$s2";
+	if (!strcmp(reg, "10011")) return "$s3";
+	if (!strcmp(reg, "10100")) return "$s4";
+	if (!strcmp(reg, "10101")) return "$s5";
+	if (!strcmp(reg, "10110")) return "$s6";
+	if (!strcmp(reg, "10111")) return "$s7";
+	if (!strcmp(reg, "11000")) return "$t8";
+	if (!strcmp(reg, "11001")) return "$t9";
+	if (!strcmp(reg, "11010")) return "$k0";
+	if (!strcmp(reg, "11011")) return "$k1";
+	if (!strcmp(reg, "11100")) return "$gp";
+	if (!strcmp(reg, "11101")) return "$sp";
+	if (!strcmp(reg, "11110")) return "$fp";
+	if (!strcmp(reg, "11111")) return "$ra";
 	return NULL;
 }
 
