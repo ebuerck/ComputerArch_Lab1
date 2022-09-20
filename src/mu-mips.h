@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <math.h>
 
 #define FALSE 0
 #define TRUE  1

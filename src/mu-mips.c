@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <assert.h>
 #include <ctype.h>
+#include <math.h>
 
 #include "mu-mips.h"
 
@@ -593,6 +594,22 @@ char* GetJFunction(char* instruction)
 	return NULL;
 }
 
+int convertBinarytoDecimal(char * binary) {
+	int bin = atoi(binary);
+
+  int dec = 0, i = 0, rem;
+
+
+  while (bin!=0) {
+    rem = bin % 10;
+    bin /= 10;
+    dec += rem * i * i;
+    ++i;
+  }
+
+  return dec;
+}
+
 
 char* returnRFormat(char* instruction) {
 	char rs[6];
@@ -636,8 +653,9 @@ char* returnIFormat(char* instruction) {
 	char op[7];
 	strncpy(op, &instruction[0], 6);
 	op[6] = '\0';
+	int decimal = convertBinarytoDecimal(imm);
 
-	printf("%s %s, %s, %s\n",GetIFunction(op, rt),returnRegister(rt), returnRegister(rs), imm);
+	printf("%s %s, %s, %d\n",GetIFunction(op, rt),returnRegister(rt), returnRegister(rs), decimal);
 	return NULL;
 }
 
