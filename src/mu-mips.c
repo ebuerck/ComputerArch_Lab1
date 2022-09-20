@@ -492,6 +492,7 @@ char* GetRFunction(char* instruction)
 	{
 		return "JALR";
 	}
+	return NULL;
 }
 
 char* GetIFunction(char* instruction, char* rt)
@@ -568,10 +569,11 @@ char* GetIFunction(char* instruction, char* rt)
 	{
 		return "BGEZ";
 	}
-	if(!strcmp(instruction, "000111") 
+	if(!strcmp(instruction, "000111"))
 	{
 		return "BGTZ";
 	}
+	return NULL;
 }
 
 char* GetJFunction(char* instruction, char* rt)
@@ -588,6 +590,7 @@ char* GetJFunction(char* instruction, char* rt)
 	{
 		return "JAL";
 	}
+	return NULL;
 }
 
 
@@ -597,6 +600,7 @@ char* returnRFormat(char* instruction) {
 	strncpy(rs, &instruction[6], 5);
 	rs[5] = '\0';
 	printf("rs is %s\n", rs);
+	printf("The rs is %s\n", returnRegister(rs));
 	char rt[6];
 	strncpy(rt, &instruction[11], 5);
 	rt[5] = '\0';
@@ -605,6 +609,12 @@ char* returnRFormat(char* instruction) {
 	strncpy(rd, &instruction[16], 5);
 	rd[5] = '\0';
 	printf("rd is %s\n", rd);
+
+	char op[7];
+	strncpy(op, &instruction[0], 6);
+	op[6] = '\0';
+
+	printf("%s %s, %s, %s\n",GetRFunction(op),returnRegister(rd), returnRegister(rs), returnRegister(rt));
 	return NULL;
 }
 

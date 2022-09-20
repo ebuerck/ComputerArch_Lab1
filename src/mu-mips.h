@@ -79,3 +79,8 @@ void initialize();
 void print_program(); /*IMPLEMENT THIS*/
 void print_instruction(uint32_t);
 
+/***************************************************************/
+/* HELPER Function Declerations.                                                                                                */
+/***************************************************************/
+char* returnRegister(char* reg);
+
