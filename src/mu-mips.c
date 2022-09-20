@@ -484,6 +484,110 @@ char* GetRFunction(char* instruction)
 	{
 		return "MTLO";
 	}
+	if(!strcmp(instruction, "001000"))
+	{
+		return "JR";
+	}
+	if(!strcmp(instruction, "001001"))
+	{
+		return "JALR";
+	}
+}
+
+char* GetIFunction(char* instruction, char* rt)
+{
+	if(!strcmp(instruction, "001000"))
+	{
+		return "ADDI";
+	}
+	if(!strcmp(instruction, "001001"))
+	{
+		return "ADDIU";
+	}
+	if(!strcmp(instruction, "001100"))
+	{
+		return "ANDI";
+	}
+	if(!strcmp(instruction, "001101"))
+	{
+		return "ORI";
+	}
+	if(!strcmp(instruction, "001110"))
+	{
+		return "XORI";
+	}
+	if(!strcmp(instruction, "001010"))
+	{
+		return "SLTI";
+	}
+	if(!strcmp(instruction, "100011"))
+	{
+		return "LW";
+	}
+	if(!strcmp(instruction, "100000"))
+	{
+		return "LB";
+	}
+	if(!strcmp(instruction, "100001"))
+	{
+		return "LH";
+	}
+	if(!strcmp(instruction, "001111"))
+	{
+		return "LUI";
+	}
+	if(!strcmp(instruction, "101011"))
+	{
+		return "SW";
+	}
+	if(!strcmp(instruction, "101000"))
+	{
+		return "SB";
+	}
+	if(!strcmp(instruction, "101001"))
+	{
+		return "SH";
+	}
+	if(!strcmp(instruction, "000100"))
+	{
+		return "BEQ";
+	}
+	if(!strcmp(instruction, "000101"))
+	{
+		return "BNE";
+	}
+	if(!strcmp(instruction, "000110"))
+	{
+		return "BLEZ";
+	}
+	if(!strcmp(instruction, "000001") && !strcmp(rt, "00000")) 
+	{
+		return "BLTZ";
+	}
+	if(!strcmp(instruction, "000001") && !strcmp(rt, "00001")) 
+	{
+		return "BGEZ";
+	}
+	if(!strcmp(instruction, "000111") 
+	{
+		return "BGTZ";
+	}
+}
+
+char* GetJFunction(char* instruction, char* rt)
+{
+	if(!strcmp(instruction, "000010"))
+	{
+		return "J";
+	}
+	if(!strcmp(instruction, "000011"))
+	{
+		return "JAL";
+	}
+	if(!strcmp(instruction, "000011"))
+	{
+		return "JAL";
+	}
 }
 
 
