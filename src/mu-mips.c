@@ -576,7 +576,7 @@ char* GetIFunction(char* instruction, char* rt)
 	return NULL;
 }
 
-char* GetJFunction(char* instruction, char* rt)
+char* GetJFunction(char* instruction)
 {
 	if(!strcmp(instruction, "000010"))
 	{
@@ -638,6 +638,16 @@ char* returnIFormat(char* instruction) {
 	op[6] = '\0';
 
 	printf("%s %s, %s, %s\n",GetIFunction(op, rt),returnRegister(rt), returnRegister(rs), imm);
+	return NULL;
+}
+
+char* returnJFormat(char* instruction) {
+	char op[7];
+	strncpy(op, &instruction[0], 6);
+	op[6] = '\0';
+	char address[27];
+	strncpy(address, &instruction[6], 26);
+	printf("%s %s\n", GetJFunction(op), address);
 	return NULL;
 }
 
@@ -711,7 +721,7 @@ void print_instruction(uint32_t addr){
 			break;
 		}
 		case 'J': {
-			// Make J function.
+			returnJFormat(fullbinay);
 			break;
 		}
 		default: {
