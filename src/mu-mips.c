@@ -504,6 +504,63 @@ char* returnRFormat(char* instruction) {
 	return rs;
 }
 
+char* returnRegister(char* register){
+	switch(register) {
+		case "00000": {
+			return "$zero";
+		}
+		case "00001": {
+			return: "$at";
+		}
+		case "00010": {
+			return: "$v0"
+		}
+		case "00011": {
+			return: "$v1";
+		}
+		case "00100": {
+			return: "$a0";
+		}
+		case "00101": {
+			return: "$a1";
+		}
+		case "00110": {
+			return: "$a2";
+		}
+		case "00111": {
+			return: "$a3";
+		}
+		case "01000": {
+			return: "$t0";
+		}
+		case "01001": {
+			return: "$t1";		
+		}
+		case "01010": {
+			return: "$t2";
+		}
+		case "01011": {
+			return: "$t3";
+		}
+		case "01100": {
+			return: "$t4";
+		}
+		case "01101": {
+			return: "$t5";
+		}
+		case "01110": {
+			return: "$t6";
+		}
+		case "01111": {
+			return: "$t7";
+		}
+	
+	
+	
+	}
+	return NULL;
+}
+
 /************************************************************/
 /* Print the instruction at given memory address (in MIPS assembly format)    */
 /************************************************************/
