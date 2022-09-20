@@ -618,6 +618,29 @@ char* returnRFormat(char* instruction) {
 	return NULL;
 }
 
+char* returnIFormat(char* instruction) {
+	char rs[6];
+	printf("fullbinay is %s\n", instruction);
+	strncpy(rs, &instruction[6], 5);
+	rs[5] = '\0';
+
+	char rt[6];
+	strncpy(rt, &instruction[11], 5);
+	rt[5] = '\0';
+	
+	char imm[17];
+	strncpy(imm, &instruction[16], 16);
+	imm[16] = '\0';
+	
+
+	char op[7];
+	strncpy(op, &instruction[0], 6);
+	op[6] = '\0';
+
+	printf("%s %s, %s, %s\n",GetIFunction(op, rt),returnRegister(rt), returnRegister(rs), imm);
+	return NULL;
+}
+
 char* returnRegister(char* reg){
 	if (!strcmp(reg, "00000")) return "$zero";
 	if (!strcmp(reg, "00001")) return "$at";
@@ -684,7 +707,7 @@ void print_instruction(uint32_t addr){
 			break;
 		}
 		case 'I': {
-			// Make I function.
+			returnIFormat(fullbinay);
 			break;
 		}
 		case 'J': {
