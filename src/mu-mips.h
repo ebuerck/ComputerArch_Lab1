@@ -84,4 +84,12 @@ void print_instruction(uint32_t);
 /* HELPER Function Declerations.                                                                                                */
 /***************************************************************/
 char* returnRegister(char* reg);
+char* hex_to_binary(char Hexdigit);
+char FindFormat(char* instruction);
+char* GetIFunction(char* instruction, char* rt);
+char* GetJFunction(char* instruction);
+int convertBinarytoDecimal(char * binary);
+char* returnRFormat(char* instruction);
+char* returnIFormat(char* instruction);
+char* returnJFormat(char* instruction);
 
