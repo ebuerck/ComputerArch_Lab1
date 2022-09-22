@@ -348,22 +348,16 @@ void handle_instruction()
 	printf("The instruction to execute is %s\n", instruct.op);
 	int rd = convertBinarytoDecimal(instruct.rd);
 	int rs = convertBinarytoDecimal(instruct.rs);
-	printf(" Rt is : %s\n", instruct.rt);
-
-	printf("rt: %d\n",instruct.rt);
+	printf(" Rt is : %d\n", instruct.rt);
 
 	if(!strcmp(instruct.op, "ADD")){
 		CURRENT_STATE.REGS[rd] = CURRENT_STATE.REGS[rs] + CURRENT_STATE.REGS[instruct.rt];
 		NEXT_STATE.PC = CURRENT_STATE.PC + 4;
 	}
 	if(!strcmp(instruct.op, "LUI")){
-<<<<<<< HEAD
-		CURRENT_STATE.REGS[rt] = instruct.immediate;
-		CURRENT_STATE.REGS[rt] = CURRENT_STATE.REGS[rt] << 16;
-		NEXT_STATE.PC = CURRENT_STATE.PC + 4;
-=======
 		CURRENT_STATE.REGS[instruct.rt] = instruct.immediate;
->>>>>>> 2383747c72c04c4759c892d979de4bea1e9b35d3
+		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rt] << 16;
+		NEXT_STATE.PC = CURRENT_STATE.PC + 4;
 	}
 
 	
@@ -656,12 +650,12 @@ char* GetJFunction(char* instruction)
 
 int convertBinarytoDecimal(char * binary) {
 	int num = atoi(binary);
-    int dec_value = 0;
+    unsigned int dec_value = 0;
  
     // Initializing base value to 1, i.e 2^0
     int base = 1;
  
-    int temp = num;
+    unsigned int temp = num;
     while (temp) {
         int last_digit = temp % 10;
         temp = temp / 10;
@@ -722,6 +716,7 @@ void returnIFormat(char* instruction, MIPS* hold) {
 	char imm[17];
 	strncpy(imm, &instruction[16], 16);
 	imm[16] = '\0';
+	printf("Immediate bin is %lx\n", strtol(imm, NULL, 2));
 	int imm_decimal = convertBinarytoDecimal(imm);
 
 	// read in the op code
