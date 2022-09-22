@@ -85,9 +85,9 @@ void print_instruction(uint32_t);
 /***************************************************************/
 typedef struct MIPS_INSTRUCT {
  char* op;
- char* rs;
+ int rs;
  int rt;
- char* rd;
+ int rd;
  uint32_t shamt;
  char* funct;
  uint32_t immediate;

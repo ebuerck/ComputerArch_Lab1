@@ -346,24 +346,16 @@ void handle_instruction()
 	MIPS instruct;
 	getSingleInstruct(&instruct);
 	printf("The instruction to execute is %s\n", instruct.op);
-	int rd = convertBinarytoDecimal(instruct.rd);
-	int rs = convertBinarytoDecimal(instruct.rs);
-	printf(" Rt is : %s\n", instruct.rt);
-
-	printf("rt: %d\n",instruct.rt);
+	printf(" Rt is : %d\n", instruct.rt);
 
 	if(!strcmp(instruct.op, "ADD")){
-		CURRENT_STATE.REGS[rd] = CURRENT_STATE.REGS[rs] + CURRENT_STATE.REGS[instruct.rt];
+		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] + CURRENT_STATE.REGS[instruct.rt];
 		NEXT_STATE.PC = CURRENT_STATE.PC + 4;
 	}
 	if(!strcmp(instruct.op, "LUI")){
-<<<<<<< HEAD
-		CURRENT_STATE.REGS[rt] = instruct.immediate;
-		CURRENT_STATE.REGS[rt] = CURRENT_STATE.REGS[rt] << 16;
-		NEXT_STATE.PC = CURRENT_STATE.PC + 4;
-=======
 		CURRENT_STATE.REGS[instruct.rt] = instruct.immediate;
->>>>>>> 2383747c72c04c4759c892d979de4bea1e9b35d3
+		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rt] << 16;
+		NEXT_STATE.PC = CURRENT_STATE.PC + 4;
 	}
 
 	
@@ -699,8 +691,8 @@ void returnRFormat(char* instruction, MIPS* hold) {
 	// flag = true , print instruction and return NULL , else return isntruction
 	printf("%s %s, %s, %s\n",GetRFunction(op),returnRegister(rd), returnRegister(rs), returnRegister(rt));
 	hold->op = GetRFunction(op);
-	hold->rd = rd;
-	hold->rs = rs;
+	hold->rd = convertBinarytoDecimal(rd);
+	hold->rs = convertBinarytoDecimal(rs);
 	hold->rt = convertBinarytoDecimal(rt);
 	hold->shamt = 0;
 	hold->funct = "";
@@ -722,7 +714,8 @@ void returnIFormat(char* instruction, MIPS* hold) {
 	char imm[17];
 	strncpy(imm, &instruction[16], 16);
 	imm[16] = '\0';
-	int imm_decimal = convertBinarytoDecimal(imm);
+	unsigned int imm_decimal = convertBinarytoDecimal(imm);
+	printf("Immediate: %d",imm_decimal);
 
 	// read in the op code
 	char op[7];
@@ -734,60 +727,59 @@ void returnIFormat(char* instruction, MIPS* hold) {
 		printf("%s %s, %d\n",GetIFunction(op, rt),returnRegister(rt), imm_decimal);
 		hold->op = GetIFunction(op,rt);
 		hold->rt = convertBinarytoDecimal(rt);
-		hold->rs = "";
+		hold->rs = convertBinarytoDecimal(rs);
 		hold->immediate = imm_decimal;
 		hold->shamt = 0;
 		hold->funct = "";
-		hold->rd = "";
+		hold->rd = -1;
 		hold->address = "";
-		printf("rt: %d",convertBinarytoDecimal(rt));
 	}
 	else if(!strcmp(GetIFunction(op, rt), "SW") || !strcmp(GetIFunction(op, rt), "SB") || !strcmp(GetIFunction(op, rt), "SH"))
 	{
 		printf("%s %s, %d(%s)\n",GetIFunction(op, rt),returnRegister(rs),imm_decimal,returnRegister(rt));
 		hold->op = GetIFunction(op,rt);
-		hold->rs = rs;
+		hold->rs = convertBinarytoDecimal(rs);
 		hold->rt = convertBinarytoDecimal(rt);
 		hold->immediate = imm_decimal;
 		hold->shamt = 0;
 		hold->funct = "";
-		hold->rd = "";
+		hold->rd = -1;
 		hold->address = "";
 	}
 	else if(!strcmp(GetIFunction(op, rt), "LW"))
 	{
 		printf("%s %s, %d(%s)\n",GetIFunction(op, rt),returnRegister(rt),imm_decimal,returnRegister(rs));
 		hold->op = GetIFunction(op,rt);
-		hold->rs = rs;
+		hold->rs = convertBinarytoDecimal(rs);
 		hold->rt = convertBinarytoDecimal(rt);
 		hold->immediate = imm_decimal;
 		hold->shamt = 0;
 		hold->funct = "";
-		hold->rd = "";
+		hold->rd = -1;
 		hold->address = "";
 	}
 	else if(!strcmp(GetIFunction(op, rt), "BEQ") || !strcmp(GetIFunction(op, rt), "BNE"))
 	{
 		printf("%s %s, %s, %d\n",GetIFunction(op, rt),returnRegister(rs),returnRegister(rt), imm_decimal);
 		hold->op = GetIFunction(op,rt);
-		hold->rs = rs;
+		hold->rs = convertBinarytoDecimal(rs);
 		hold->rt = convertBinarytoDecimal(rt);
 		hold->immediate = imm_decimal;
 		hold->shamt = 0;
 		hold->funct = "";
-		hold->rd = "";
+		hold->rd = -1;
 		hold->address = "";
 	}
 	else
 	{
 		printf("%s %s, %s, %d\n",GetIFunction(op, rt),returnRegister(rt), returnRegister(rs), imm_decimal);
 		hold->op = GetIFunction(op,rt);
-		hold->rs = rs;
+		hold->rs = convertBinarytoDecimal(rs);
 		hold->rt = convertBinarytoDecimal(rt);
 		hold->immediate = imm_decimal;
 		hold->shamt = 0;
 		hold->funct = "";
-		hold->rd = "";
+		hold->rd = -1;
 		hold->address = "";
 	}
 }
@@ -803,12 +795,12 @@ void returnJFormat(char* instruction, MIPS* hold) {
 	strncpy(address, &instruction[6], 26);
 	printf("%s %s\n", GetJFunction(op), address);
 	hold->op = GetJFunction(op);
-	hold->rs = "";
-	hold->rt = 0;
+	hold->rs = -1;
+	hold->rt = -1;
 	hold->immediate = 0;
 	hold->shamt = 0;
 	hold->funct = "";
-	hold->rd = "";
+	hold->rd = -1;
 	hold->address = address;
 }
 
