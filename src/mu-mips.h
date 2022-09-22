@@ -84,10 +84,14 @@ void print_instruction(uint32_t);
 /* HELPER Function Declerations.                                                                                                */
 /***************************************************************/
 typedef struct MIPS_INSTRUCT {
+<<<<<<< HEAD
  int op;
+=======
+ char* op;
+>>>>>>> a2f18b946d282451f7de568238d94b535b63d674
  int rs;
  int rt;
- char* rd;
+ int rd;
  uint32_t shamt;
  char* funct;
  uint32_t immediate;
