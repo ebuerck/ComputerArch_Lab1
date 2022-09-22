@@ -346,8 +346,9 @@ void handle_instruction()
 	getSingleInstruct(&instruct);
 	printf("The instruction to execute is %s\n", instruct.op);
 
-	if(!strcmp(opcod, "000000")){
-
+	if(!strcmp(instruct.op, "LUI")){
+		int rt = convertBinarytoDecimal();
+		CURRENT_STATE.REGS[rt] = instruct.immediate;
 	}
 
 	

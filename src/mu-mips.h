@@ -88,9 +88,9 @@ typedef struct MIPS_INSTRUCT {
  char* rs;
  char* rt;
  char* rd;
- int shamt;
+ uint32_t shamt;
  char* funct;
- int immediate;
+ uint32_t immediate;
  char* address;
 } MIPS;
 
