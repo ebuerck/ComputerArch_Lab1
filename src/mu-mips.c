@@ -350,10 +350,12 @@ void handle_instruction()
 	int rt = convertBinarytoDecimal(instruct.rt);
 	int rs = convertBinarytoDecimal(instruct.rs);
 
-	if(!strcmp(instruct.op, "ADD"))
-	{
+	if(!strcmp(instruct.op, "ADD")){
 		CURRENT_STATE.REGS[rd] = CURRENT_STATE.REGS[rs] + CURRENT_STATE.REGS[rt];
 		NEXT_STATE.PC = CURRENT_STATE.PC + 4;
+	}
+	if(!strcmp(instruct.op, "LUI")){
+		CURRENT_STATE.REGS[rt] = instruct.immediate;
 	}
 
 	
