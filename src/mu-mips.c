@@ -344,7 +344,11 @@ void handle_instruction()
 	/* execute one instruction at a time. Use/update CURRENT_STATE and and NEXT_STATE, as necessary.*/
 	MIPS instruct;
 	getSingleInstruct(&instruct);
-	printf("The instruction to execute is %s\n\n\n", instruct.op);
+	printf("The instruction to execute is %s\n", instruct.op);
+
+	if(!strcmp(opcod, "000000")){
+
+	}
 
 	
 	NEXT_STATE = CURRENT_STATE;
@@ -675,9 +679,9 @@ void returnRFormat(char* instruction, MIPS* hold) {
 	// flag = true , print instruction and return NULL , else return isntruction
 	printf("%s %s, %s, %s\n",GetRFunction(op),returnRegister(rd), returnRegister(rs), returnRegister(rt));
 	hold->op = GetRFunction(op);
-	hold->rd = returnRegister(rd);
-	hold->rs = returnRegister(rs);
-	hold->rt = returnRegister(rt);
+	hold->rd = rd;
+	hold->rs = rs;
+	hold->rt = rt;
 	hold->shamt = 0;
 	hold->funct = "";
 	hold->immediate = 0;
@@ -709,7 +713,7 @@ void returnIFormat(char* instruction, MIPS* hold) {
 	{
 		printf("%s %s, %d\n",GetIFunction(op, rt),returnRegister(rt), imm_decimal);
 		hold->op = GetIFunction(op,rt);
-		hold->rt = returnRegister(rt);
+		hold->rt = rt;
 		hold->rs = "";
 		hold->immediate = imm_decimal;
 		hold->shamt = 0;
@@ -721,8 +725,8 @@ void returnIFormat(char* instruction, MIPS* hold) {
 	{
 		printf("%s %s, %d(%s)\n",GetIFunction(op, rt),returnRegister(rs),imm_decimal,returnRegister(rt));
 		hold->op = GetIFunction(op,rt);
-		hold->rs = returnRegister(rs);
-		hold->rt = returnRegister(rt);
+		hold->rs = rs;
+		hold->rt = rt;
 		hold->immediate = imm_decimal;
 		hold->shamt = 0;
 		hold->funct = "";
@@ -733,8 +737,8 @@ void returnIFormat(char* instruction, MIPS* hold) {
 	{
 		printf("%s %s, %d(%s)\n",GetIFunction(op, rt),returnRegister(rt),imm_decimal,returnRegister(rs));
 		hold->op = GetIFunction(op,rt);
-		hold->rs = returnRegister(rs);
-		hold->rt = returnRegister(rt);
+		hold->rs = rs;
+		hold->rt = rt;
 		hold->immediate = imm_decimal;
 		hold->shamt = 0;
 		hold->funct = "";
@@ -745,8 +749,8 @@ void returnIFormat(char* instruction, MIPS* hold) {
 	{
 		printf("%s %s, %s, %d\n",GetIFunction(op, rt),returnRegister(rs),returnRegister(rt), imm_decimal);
 		hold->op = GetIFunction(op,rt);
-		hold->rs = returnRegister(rs);
-		hold->rt = returnRegister(rt);
+		hold->rs = rs;
+		hold->rt = rt;
 		hold->immediate = imm_decimal;
 		hold->shamt = 0;
 		hold->funct = "";
@@ -757,8 +761,8 @@ void returnIFormat(char* instruction, MIPS* hold) {
 	{
 		printf("%s %s, %s, %d\n",GetIFunction(op, rt),returnRegister(rt), returnRegister(rs), imm_decimal);
 		hold->op = GetIFunction(op,rt);
-		hold->rs = returnRegister(rs);
-		hold->rt = returnRegister(rt);
+		hold->rs = rs;
+		hold->rt = rt;
 		hold->immediate = imm_decimal;
 		hold->shamt = 0;
 		hold->funct = "";
