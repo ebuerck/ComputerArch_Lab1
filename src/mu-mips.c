@@ -648,12 +648,12 @@ char* GetJFunction(char* instruction)
 
 int convertBinarytoDecimal(char * binary) {
 	int num = atoi(binary);
-    int dec_value = 0;
+    unsigned int dec_value = 0;
  
     // Initializing base value to 1, i.e 2^0
     int base = 1;
  
-    int temp = num;
+    unsigned int temp = num;
     while (temp) {
         int last_digit = temp % 10;
         temp = temp / 10;
@@ -714,8 +714,7 @@ void returnIFormat(char* instruction, MIPS* hold) {
 	char imm[17];
 	strncpy(imm, &instruction[16], 16);
 	imm[16] = '\0';
-	unsigned int imm_decimal = convertBinarytoDecimal(imm);
-	printf("Immediate: %d",imm_decimal);
+	long unsigned int imm_hex = strtol(imm, NULL, 2);
 
 	// read in the op code
 	char op[7];
@@ -724,11 +723,11 @@ void returnIFormat(char* instruction, MIPS* hold) {
 
 	if(!strcmp(GetIFunction(op, rt), "LUI"))
 	{
-		printf("%s %s, %d\n",GetIFunction(op, rt),returnRegister(rt), imm_decimal);
+		printf("%s %s, x%lx\n",GetIFunction(op, rt),returnRegister(rt), imm_hex);
 		hold->op = GetIFunction(op,rt);
 		hold->rt = convertBinarytoDecimal(rt);
-		hold->rs = convertBinarytoDecimal(rs);
-		hold->immediate = imm_decimal;
+		hold->rs = "";
+		hold->immediate = imm_hex;
 		hold->shamt = 0;
 		hold->funct = "";
 		hold->rd = -1;
@@ -736,11 +735,11 @@ void returnIFormat(char* instruction, MIPS* hold) {
 	}
 	else if(!strcmp(GetIFunction(op, rt), "SW") || !strcmp(GetIFunction(op, rt), "SB") || !strcmp(GetIFunction(op, rt), "SH"))
 	{
-		printf("%s %s, %d(%s)\n",GetIFunction(op, rt),returnRegister(rs),imm_decimal,returnRegister(rt));
+		printf("%s %s, %d(%s)\n",GetIFunction(op, rt),returnRegister(rs),(int)imm_hex,returnRegister(rt));
 		hold->op = GetIFunction(op,rt);
 		hold->rs = convertBinarytoDecimal(rs);
 		hold->rt = convertBinarytoDecimal(rt);
-		hold->immediate = imm_decimal;
+		hold->immediate = imm_hex;
 		hold->shamt = 0;
 		hold->funct = "";
 		hold->rd = -1;
@@ -748,11 +747,11 @@ void returnIFormat(char* instruction, MIPS* hold) {
 	}
 	else if(!strcmp(GetIFunction(op, rt), "LW"))
 	{
-		printf("%s %s, %d(%s)\n",GetIFunction(op, rt),returnRegister(rt),imm_decimal,returnRegister(rs));
+		printf("%s %s, %d(%s)\n",GetIFunction(op, rt),returnRegister(rt),(int)imm_hex,returnRegister(rs));
 		hold->op = GetIFunction(op,rt);
 		hold->rs = convertBinarytoDecimal(rs);
 		hold->rt = convertBinarytoDecimal(rt);
-		hold->immediate = imm_decimal;
+		hold->immediate = imm_hex;
 		hold->shamt = 0;
 		hold->funct = "";
 		hold->rd = -1;
@@ -760,11 +759,11 @@ void returnIFormat(char* instruction, MIPS* hold) {
 	}
 	else if(!strcmp(GetIFunction(op, rt), "BEQ") || !strcmp(GetIFunction(op, rt), "BNE"))
 	{
-		printf("%s %s, %s, %d\n",GetIFunction(op, rt),returnRegister(rs),returnRegister(rt), imm_decimal);
+		printf("%s %s, %s, x%lx\n",GetIFunction(op, rt),returnRegister(rs),returnRegister(rt), imm_hex);
 		hold->op = GetIFunction(op,rt);
 		hold->rs = convertBinarytoDecimal(rs);
 		hold->rt = convertBinarytoDecimal(rt);
-		hold->immediate = imm_decimal;
+		hold->immediate = imm_hex;
 		hold->shamt = 0;
 		hold->funct = "";
 		hold->rd = -1;
@@ -772,11 +771,11 @@ void returnIFormat(char* instruction, MIPS* hold) {
 	}
 	else
 	{
-		printf("%s %s, %s, %d\n",GetIFunction(op, rt),returnRegister(rt), returnRegister(rs), imm_decimal);
+		printf("%s %s, %s, x%lx\n",GetIFunction(op, rt),returnRegister(rt), returnRegister(rs), imm_hex);
 		hold->op = GetIFunction(op,rt);
 		hold->rs = convertBinarytoDecimal(rs);
 		hold->rt = convertBinarytoDecimal(rt);
-		hold->immediate = imm_decimal;
+		hold->immediate = imm_hex;
 		hold->shamt = 0;
 		hold->funct = "";
 		hold->rd = -1;
