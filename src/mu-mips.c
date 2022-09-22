@@ -346,12 +346,9 @@ void handle_instruction()
 	MIPS instruct;
 	getSingleInstruct(&instruct);
 	printf("The instruction to execute is %s\n", instruct.op);
-	int rd = convertBinarytoDecimal(instruct.rd);
-	int rs = convertBinarytoDecimal(instruct.rs);
-	printf(" Rt is : %d\n", instruct.rt);
 
 	if(!strcmp(instruct.op, "ADD")){
-		CURRENT_STATE.REGS[rd] = CURRENT_STATE.REGS[rs] + CURRENT_STATE.REGS[instruct.rt];
+		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] + CURRENT_STATE.REGS[instruct.rt];
 		NEXT_STATE.PC = CURRENT_STATE.PC + 4;
 	}
 	if(!strcmp(instruct.op, "LUI")){
@@ -361,7 +358,7 @@ void handle_instruction()
 	}
 
 	
-	NEXT_STATE = CURRENT_STATE;
+	//NEXT_STATE = CURRENT_STATE;
 	//NEXT_STATE.PC = CURRENT_STATE.PC + 4;
 
 }
