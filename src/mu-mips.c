@@ -347,19 +347,20 @@ void handle_instruction()
 	printf("The instruction to execute is %s\n", instruct.op);
 	CURRENT_STATE = NEXT_STATE;
 	int rd = convertBinarytoDecimal(instruct.rd);
-	int rt = convertBinarytoDecimal(instruct.rt);
 	int rs = convertBinarytoDecimal(instruct.rs);
 
+	printf("rt: %d\n",instruct.rt);
+
 	if(!strcmp(instruct.op, "ADD")){
-		CURRENT_STATE.REGS[rd] = CURRENT_STATE.REGS[rs] + CURRENT_STATE.REGS[rt];
+		CURRENT_STATE.REGS[rd] = CURRENT_STATE.REGS[rs] + CURRENT_STATE.REGS[instruct.rt];
 		NEXT_STATE.PC = CURRENT_STATE.PC + 4;
 	}
 	if(!strcmp(instruct.op, "LUI")){
-		CURRENT_STATE.REGS[rt] = instruct.immediate;
+		CURRENT_STATE.REGS[instruct.rt] = instruct.immediate;
 	}
 
 	
-	//NEXT_STATE = CURRENT_STATE;
+	NEXT_STATE = CURRENT_STATE;
 	//NEXT_STATE.PC = CURRENT_STATE.PC + 4;
 
 }
@@ -689,7 +690,7 @@ void returnRFormat(char* instruction, MIPS* hold) {
 	hold->op = GetRFunction(op);
 	hold->rd = rd;
 	hold->rs = rs;
-	hold->rt = rt;
+	hold->rt = convertBinarytoDecimal(rt);
 	hold->shamt = 0;
 	hold->funct = "";
 	hold->immediate = 0;
@@ -721,20 +722,21 @@ void returnIFormat(char* instruction, MIPS* hold) {
 	{
 		printf("%s %s, %d\n",GetIFunction(op, rt),returnRegister(rt), imm_decimal);
 		hold->op = GetIFunction(op,rt);
-		hold->rt = rt;
+		hold->rt = convertBinarytoDecimal(rt);
 		hold->rs = "";
 		hold->immediate = imm_decimal;
 		hold->shamt = 0;
 		hold->funct = "";
 		hold->rd = "";
 		hold->address = "";
+		printf("rt: %d",convertBinarytoDecimal(rt));
 	}
 	else if(!strcmp(GetIFunction(op, rt), "SW") || !strcmp(GetIFunction(op, rt), "SB") || !strcmp(GetIFunction(op, rt), "SH"))
 	{
 		printf("%s %s, %d(%s)\n",GetIFunction(op, rt),returnRegister(rs),imm_decimal,returnRegister(rt));
 		hold->op = GetIFunction(op,rt);
 		hold->rs = rs;
-		hold->rt = rt;
+		hold->rt = convertBinarytoDecimal(rt);
 		hold->immediate = imm_decimal;
 		hold->shamt = 0;
 		hold->funct = "";
@@ -746,7 +748,7 @@ void returnIFormat(char* instruction, MIPS* hold) {
 		printf("%s %s, %d(%s)\n",GetIFunction(op, rt),returnRegister(rt),imm_decimal,returnRegister(rs));
 		hold->op = GetIFunction(op,rt);
 		hold->rs = rs;
-		hold->rt = rt;
+		hold->rt = convertBinarytoDecimal(rt);
 		hold->immediate = imm_decimal;
 		hold->shamt = 0;
 		hold->funct = "";
@@ -758,7 +760,7 @@ void returnIFormat(char* instruction, MIPS* hold) {
 		printf("%s %s, %s, %d\n",GetIFunction(op, rt),returnRegister(rs),returnRegister(rt), imm_decimal);
 		hold->op = GetIFunction(op,rt);
 		hold->rs = rs;
-		hold->rt = rt;
+		hold->rt = convertBinarytoDecimal(rt);
 		hold->immediate = imm_decimal;
 		hold->shamt = 0;
 		hold->funct = "";
@@ -770,7 +772,7 @@ void returnIFormat(char* instruction, MIPS* hold) {
 		printf("%s %s, %s, %d\n",GetIFunction(op, rt),returnRegister(rt), returnRegister(rs), imm_decimal);
 		hold->op = GetIFunction(op,rt);
 		hold->rs = rs;
-		hold->rt = rt;
+		hold->rt = convertBinarytoDecimal(rt);
 		hold->immediate = imm_decimal;
 		hold->shamt = 0;
 		hold->funct = "";
@@ -791,7 +793,7 @@ void returnJFormat(char* instruction, MIPS* hold) {
 	printf("%s %s\n", GetJFunction(op), address);
 	hold->op = GetJFunction(op);
 	hold->rs = "";
-	hold->rt = "";
+	hold->rt = 0;
 	hold->immediate = 0;
 	hold->shamt = 0;
 	hold->funct = "";
