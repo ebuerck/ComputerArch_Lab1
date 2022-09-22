@@ -345,16 +345,15 @@ void handle_instruction()
 	MIPS instruct;
 	getSingleInstruct(&instruct);
 	printf("The instruction to execute is %s\n", instruct.op);
-
-	if(!strcmp(opcod, "000000")){
-
-	}
+	CURRENT_STATE = NEXT_STATE;
+	int rd = convertBinarytoDecimal(instruct.rd);
+	int rt = convertBinarytoDecimal(instruct.rt);
+	int rs = convertBinarytoDecimal(instruct.rs);
 
 	if(!strcmp(instruct.op, "ADD"))
 	{
-		CURRENT_STATE.REGS[atoi(instruct.rd)] = CURRENT_STATE.REGS[atoi(instruct.rs)] + CURRENT_STATE.REGS[atoi(instruct.rt)];
+		CURRENT_STATE.REGS[rd] = CURRENT_STATE.REGS[rs] + CURRENT_STATE.REGS[rt];
 		NEXT_STATE.PC = CURRENT_STATE.PC + 4;
-		NEXT_STATE = CURRENT_STATE;
 	}
 
 	
