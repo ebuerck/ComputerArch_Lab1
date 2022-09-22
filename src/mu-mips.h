@@ -83,13 +83,26 @@ void print_instruction(uint32_t);
 /***************************************************************/
 /* HELPER Function Declerations.                                                                                                */
 /***************************************************************/
+typedef struct MIPS_INSTRUCT {
+ char* op;
+ char* rs;
+ char* rt;
+ char* rd;
+ int shamt;
+ char* funct;
+ int immediate;
+ char* address;
+} MIPS;
+
+
 char* returnRegister(char* reg);
 char* hex_to_binary(char Hexdigit);
 char FindFormat(char* instruction);
 char* GetIFunction(char* instruction, char* rt);
 char* GetJFunction(char* instruction);
 int convertBinarytoDecimal(char * binary);
-char* returnRFormat(char* instruction);
-char* returnIFormat(char* instruction);
-char* returnJFormat(char* instruction);
+void returnRFormat(char* instruction, MIPS*);
+void returnIFormat(char* instruction, MIPS*);
+void returnJFormat(char* instruction, MIPS*);
+void getSingleInstruct(MIPS*);
 

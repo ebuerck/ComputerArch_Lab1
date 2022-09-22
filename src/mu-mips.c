@@ -302,15 +302,55 @@ void load_program() {
 	fclose(fp);
 }
 
+void getSingleInstruct(MIPS* instrAddress){
+	uint32_t instr = mem_read_32(CURRENT_STATE.PC);
+
+	char string[9];
+	sprintf(string,"%8x", instr);
+
+	char fullbinary[33];
+	fullbinary[0] = '\0';
+
+	for(int i = 0; i < 9; i++)
+	{
+		strcat(fullbinary, hex_to_binary(string[i]));
+	}
+
+	switch(FindFormat(fullbinary)) {
+		case 'R': {
+			returnRFormat(fullbinary,instrAddress);
+			break;
+		}
+		case 'I': {
+			returnIFormat(fullbinary,instrAddress);
+			break;
+		}
+		case 'J': {
+			returnJFormat(fullbinary,instrAddress);
+			break;
+		}
+		default: {
+			printf("You messed up.\n");
+			break;
+		}
+	}
+}
+
 /************************************************************/
 /* decode and execute instruction                                                                     */
 /************************************************************/
 void handle_instruction()
 {
-	/*IMPLEMENT THIS*/
 	/* execute one instruction at a time. Use/update CURRENT_STATE and and NEXT_STATE, as necessary.*/
-}
+	MIPS instruct;
+	getSingleInstruct(&instruct);
+	printf("The instruction to execute is %s\n\n\n", instruct.op);
 
+	
+	NEXT_STATE = CURRENT_STATE;
+	NEXT_STATE.PC = CURRENT_STATE.PC + 4;
+
+}
 
 /************************************************************/
 /* Initialize Memory                                                                                                    */
@@ -611,7 +651,7 @@ int convertBinarytoDecimal(char * binary) {
 }
 
 
-char* returnRFormat(char* instruction) {
+void returnRFormat(char* instruction, MIPS* hold) {
 	// Read in the rs register
 	char rs[6];
 	strncpy(rs, &instruction[6], 5);
@@ -632,11 +672,18 @@ char* returnRFormat(char* instruction) {
 	strncpy(op, &instruction[0], 6);
 	op[6] = '\0';
 
+	// flag = true , print instruction and return NULL , else return isntruction
 	printf("%s %s, %s, %s\n",GetRFunction(op),returnRegister(rd), returnRegister(rs), returnRegister(rt));
-	return NULL;
+	hold->op = GetRFunction(op);
+	hold->rd = returnRegister(rd);
+	hold->rs = returnRegister(rs);
+	hold->rt = returnRegister(rt);
+	hold->shamt = 0;
+	hold->funct = "";
+	hold->immediate = 0;
 }
 
-char* returnIFormat(char* instruction) {
+void returnIFormat(char* instruction, MIPS* hold) {
 	// read in the rs register
 	char rs[6];
 	strncpy(rs, &instruction[6], 5);
@@ -661,27 +708,66 @@ char* returnIFormat(char* instruction) {
 	if(!strcmp(GetIFunction(op, rt), "LUI"))
 	{
 		printf("%s %s, %d\n",GetIFunction(op, rt),returnRegister(rt), imm_decimal);
+		hold->op = GetIFunction(op,rt);
+		hold->rt = returnRegister(rt);
+		hold->rs = "";
+		hold->immediate = imm_decimal;
+		hold->shamt = 0;
+		hold->funct = "";
+		hold->rd = "";
+		hold->address = "";
 	}
 	else if(!strcmp(GetIFunction(op, rt), "SW") || !strcmp(GetIFunction(op, rt), "SB") || !strcmp(GetIFunction(op, rt), "SH"))
 	{
 		printf("%s %s, %d(%s)\n",GetIFunction(op, rt),returnRegister(rs),imm_decimal,returnRegister(rt));
+		hold->op = GetIFunction(op,rt);
+		hold->rs = returnRegister(rs);
+		hold->rt = returnRegister(rt);
+		hold->immediate = imm_decimal;
+		hold->shamt = 0;
+		hold->funct = "";
+		hold->rd = "";
+		hold->address = "";
 	}
 	else if(!strcmp(GetIFunction(op, rt), "LW"))
 	{
 		printf("%s %s, %d(%s)\n",GetIFunction(op, rt),returnRegister(rt),imm_decimal,returnRegister(rs));
+		hold->op = GetIFunction(op,rt);
+		hold->rs = returnRegister(rs);
+		hold->rt = returnRegister(rt);
+		hold->immediate = imm_decimal;
+		hold->shamt = 0;
+		hold->funct = "";
+		hold->rd = "";
+		hold->address = "";
 	}
 	else if(!strcmp(GetIFunction(op, rt), "BEQ") || !strcmp(GetIFunction(op, rt), "BNE"))
 	{
 		printf("%s %s, %s, %d\n",GetIFunction(op, rt),returnRegister(rs),returnRegister(rt), imm_decimal);
+		hold->op = GetIFunction(op,rt);
+		hold->rs = returnRegister(rs);
+		hold->rt = returnRegister(rt);
+		hold->immediate = imm_decimal;
+		hold->shamt = 0;
+		hold->funct = "";
+		hold->rd = "";
+		hold->address = "";
 	}
 	else
 	{
 		printf("%s %s, %s, %d\n",GetIFunction(op, rt),returnRegister(rt), returnRegister(rs), imm_decimal);
+		hold->op = GetIFunction(op,rt);
+		hold->rs = returnRegister(rs);
+		hold->rt = returnRegister(rt);
+		hold->immediate = imm_decimal;
+		hold->shamt = 0;
+		hold->funct = "";
+		hold->rd = "";
+		hold->address = "";
 	}
-	return NULL;
 }
 
-char* returnJFormat(char* instruction) {
+void returnJFormat(char* instruction, MIPS* hold) {
 	// read in the op code
 	char op[7];
 	strncpy(op, &instruction[0], 6);
@@ -691,7 +777,14 @@ char* returnJFormat(char* instruction) {
 	char address[27];
 	strncpy(address, &instruction[6], 26);
 	printf("%s %s\n", GetJFunction(op), address);
-	return NULL;
+	hold->op = GetJFunction(op);
+	hold->rs = "";
+	hold->rt = "";
+	hold->immediate = 0;
+	hold->shamt = 0;
+	hold->funct = "";
+	hold->rd = "";
+	hold->address = address;
 }
 
 char* returnRegister(char* reg){
@@ -743,6 +836,7 @@ void print_instruction(uint32_t addr){
 	char fullbinay[33];
 	fullbinay[0] = '\0';
 
+	MIPS junk;
 
 	for(int i = 0; i < 9; i++)
 	{
@@ -751,15 +845,15 @@ void print_instruction(uint32_t addr){
 
 	switch(FindFormat(fullbinay)) {
 		case 'R': {
-			returnRFormat(fullbinay);
+			returnRFormat(fullbinay,&junk);
 			break;
 		}
 		case 'I': {
-			returnIFormat(fullbinay);
+			returnIFormat(fullbinay,&junk);
 			break;
 		}
 		case 'J': {
-			returnJFormat(fullbinay);
+			returnJFormat(fullbinay,&junk);
 			break;
 		}
 		default: {
