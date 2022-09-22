@@ -345,25 +345,19 @@ void handle_instruction()
 	/* execute one instruction at a time. Use/update CURRENT_STATE and and NEXT_STATE, as necessary.*/
 	MIPS instruct;
 	getSingleInstruct(&instruct);
-	printf("The instruction to execute is %s\n", instruct.op);
-<<<<<<< HEAD
-=======
-	printf(" Rt is : %d\n", instruct.rt);
->>>>>>> a2f18b946d282451f7de568238d94b535b63d674
 
 	if(!strcmp(instruct.op, "ADD")){
 		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] + CURRENT_STATE.REGS[instruct.rt];
-		NEXT_STATE.PC = CURRENT_STATE.PC + 4;
+		
 	}
 	if(!strcmp(instruct.op, "LUI")){
 		CURRENT_STATE.REGS[instruct.rt] = instruct.immediate;
 		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rt] << 16;
-		NEXT_STATE.PC = CURRENT_STATE.PC + 4;
 	}
 
 	
-	//NEXT_STATE = CURRENT_STATE;
-	//NEXT_STATE.PC = CURRENT_STATE.PC + 4;
+	NEXT_STATE = CURRENT_STATE;
+	NEXT_STATE.PC = CURRENT_STATE.PC + 4;
 
 }
 
@@ -729,7 +723,7 @@ void returnIFormat(char* instruction, MIPS* hold) {
 		printf("%s %s, x%lx\n",GetIFunction(op, rt),returnRegister(rt), imm_hex);
 		hold->op = GetIFunction(op,rt);
 		hold->rt = convertBinarytoDecimal(rt);
-		hold->rs = "";
+		hold->rs = -1;
 		hold->immediate = imm_hex;
 		hold->shamt = 0;
 		hold->funct = "";
