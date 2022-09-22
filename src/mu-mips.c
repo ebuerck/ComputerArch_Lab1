@@ -346,9 +346,16 @@ void handle_instruction()
 	getSingleInstruct(&instruct);
 	printf("The instruction to execute is %s\n\n\n", instruct.op);
 
+	if(!strcmp(instruct.op, "ADD"))
+	{
+		CURRENT_STATE.REGS[atoi(instruct.rd)] = CURRENT_STATE.REGS[atoi(instruct.rs)] + CURRENT_STATE.REGS[atoi(instruct.rt)];
+		NEXT_STATE.PC = CURRENT_STATE.PC + 4;
+		NEXT_STATE = CURRENT_STATE;
+	}
+
 	
-	NEXT_STATE = CURRENT_STATE;
-	NEXT_STATE.PC = CURRENT_STATE.PC + 4;
+	//NEXT_STATE = CURRENT_STATE;
+	//NEXT_STATE.PC = CURRENT_STATE.PC + 4;
 
 }
 
