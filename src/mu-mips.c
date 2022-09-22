@@ -341,14 +341,15 @@ void getSingleInstruct(MIPS* instrAddress){
 /************************************************************/
 void handle_instruction()
 {
+	CURRENT_STATE = NEXT_STATE;
 	/* execute one instruction at a time. Use/update CURRENT_STATE and and NEXT_STATE, as necessary.*/
 	MIPS instruct;
 	getSingleInstruct(&instruct);
 	printf("The instruction to execute is %s\n", instruct.op);
-	CURRENT_STATE = NEXT_STATE;
 	int rd = convertBinarytoDecimal(instruct.rd);
 	int rt = convertBinarytoDecimal(instruct.rt);
 	int rs = convertBinarytoDecimal(instruct.rs);
+	printf(" Rt is : %s\n", instruct.rt);
 
 	if(!strcmp(instruct.op, "ADD")){
 		CURRENT_STATE.REGS[rd] = CURRENT_STATE.REGS[rs] + CURRENT_STATE.REGS[rt];
@@ -356,6 +357,8 @@ void handle_instruction()
 	}
 	if(!strcmp(instruct.op, "LUI")){
 		CURRENT_STATE.REGS[rt] = instruct.immediate;
+		CURRENT_STATE.REGS[rt] = CURRENT_STATE.REGS[rt] << 16;
+		NEXT_STATE.PC = CURRENT_STATE.PC + 4;
 	}
 
 	
@@ -647,19 +650,23 @@ char* GetJFunction(char* instruction)
 }
 
 int convertBinarytoDecimal(char * binary) {
-	unsigned int bin = atoi(binary);
-
-  	unsigned int dec = 0, i = 0, rem;
-
-
-  	while (bin!=0) {
-    	rem = bin % 10;
-    	bin /= 10;
-    	dec += rem * i * i;
-    	++i;
-  	}
-
-  return dec;
+	int num = atoi(binary);
+    int dec_value = 0;
+ 
+    // Initializing base value to 1, i.e 2^0
+    int base = 1;
+ 
+    int temp = num;
+    while (temp) {
+        int last_digit = temp % 10;
+        temp = temp / 10;
+ 
+        dec_value += last_digit * base;
+ 
+        base = base * 2;
+    }
+ 
+    return dec_value;
 }
 
 
@@ -844,6 +851,10 @@ void print_instruction(uint32_t addr){
 
 	char string[9];
 	sprintf(string,"%8x", instr);
+
+	// Check for syscall
+	if(instr == 0xC)
+		return;
 
 	char fullbinay[33];
 	fullbinay[0] = '\0';
