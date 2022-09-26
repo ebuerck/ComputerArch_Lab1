@@ -346,16 +346,98 @@ void handle_instruction()
 	MIPS instruct;
 	getSingleInstruct(&instruct);
 
+   //****************************** ALU INSTRUCTIONS ******************************
 	if(!strcmp(instruct.op, "ADD")){
 		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] + CURRENT_STATE.REGS[instruct.rt];
-		
 	}
+	if(!strcmp(instruct.op, "ADDU")){
+		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] + CURRENT_STATE.REGS[instruct.rt];
+	}
+	if(!strcmp(instruct.op, "ADDI")){
+		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rs] + instruct.immediate;
+	}
+	if(!strcmp(instruct.op, "ADDIU")){
+		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rs] + instruct.immediate;
+	}
+	if(!strcmp(instruct.op, "SUB")){
+		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] - CURRENT_STATE.REGS[instruct.rt];
+	}
+	if(!strcmp(instruct.op, "SUBU")){
+		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] - CURRENT_STATE.REGS[instruct.rt];
+	}
+	if(!strcmp(instruct.op, "MULT")){
+		// HOW SHOULD WE DO THIS????
+		CURRENT_STATE.HI = CURRENT_STATE.REGS[instruct.rs] * CURRENT_STATE.REGS[instruct.rt];
+	}
+	if(!strcmp(instruct.op, "MULTU")){
+		// HOW SHOULD WE DO THIS????
+		CURRENT_STATE.HI = CURRENT_STATE.REGS[instruct.rs] * CURRENT_STATE.REGS[instruct.rt];
+	}
+	if(!strcmp(instruct.op, "DIV")){
+		CURRENT_STATE.HI = CURRENT_STATE.REGS[instruct.rs] % CURRENT_STATE.REGS[instruct.rt];
+		CURRENT_STATE.LO = CURRENT_STATE.REGS[instruct.rs] / CURRENT_STATE.REGS[instruct.rt];
+	}
+	if(!strcmp(instruct.op, "DIVU")){
+		CURRENT_STATE.HI = CURRENT_STATE.REGS[instruct.rs] % CURRENT_STATE.REGS[instruct.rt];
+		CURRENT_STATE.LO = CURRENT_STATE.REGS[instruct.rs] / CURRENT_STATE.REGS[instruct.rt];
+	}
+	if(!strcmp(instruct.op, "AND")){
+		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] & CURRENT_STATE.REGS[instruct.rt];
+	}
+	if(!strcmp(instruct.op, "ANDI")){
+		// Check and see if this is what it actually should be
+		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rs] & instruct.immediate;
+	}
+	if(!strcmp(instruct.op, "OR")){
+		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] | CURRENT_STATE.REGS[instruct.rt];
+	}
+	if(!strcmp(instruct.op, "ORI")){
+		// Check and see if this is what it actually should be
+		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rs] | instruct.immediate;
+	}
+	if(!strcmp(instruct.op, "XOR")){
+		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] ^ CURRENT_STATE.REGS[instruct.rt];
+	}
+	if(!strcmp(instruct.op, "XORI")){
+		// Check and see if this is what it actually should be
+		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rs] ^ instruct.immediate;
+	}
+	if(!strcmp(instruct.op, "NOR")){
+		CURRENT_STATE.REGS[instruct.rd] = !(CURRENT_STATE.REGS[instruct.rs] | CURRENT_STATE.REGS[instruct.rt]);
+	}
+	if(!strcmp(instruct.op, "SLT")){
+		if(instruct.rs < instruct.rt){
+			CURRENT_STATE.REGS[instruct.rd] = 1;
+		}
+		else{
+			CURRENT_STATE.REGS[instruct.rd] = 0;
+		}
+	}
+	if(!strcmp(instruct.op, "SLTI")){
+		if(instruct.rs < instruct.immediate){
+			CURRENT_STATE.REGS[instruct.rd] = 1;
+		}
+		else{
+			CURRENT_STATE.REGS[instruct.rd] = 0;
+		}
+	}
+	if(!strcmp(instruct.op, "SLL")){
+		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] << instruct.shamt;
+	}
+	if(!strcmp(instruct.op, "SRL")){
+		// What is the difference between this and SRA
+		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] >> instruct.shamt;
+	}
+	if(!strcmp(instruct.op, "SRA")){
+		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] >> instruct.shamt;
+	}
+	//****************************** ALU INSTRUCTIONS ******************************
 	if(!strcmp(instruct.op, "LUI")){
 		CURRENT_STATE.REGS[instruct.rt] = instruct.immediate;
 		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rt] << 16;
 	}
 
-	
+
 	NEXT_STATE = CURRENT_STATE;
 	NEXT_STATE.PC = CURRENT_STATE.PC + 4;
 
@@ -646,20 +728,20 @@ char* GetJFunction(char* instruction)
 int convertBinarytoDecimal(char * binary) {
 	int num = atoi(binary);
     unsigned int dec_value = 0;
- 
+
     // Initializing base value to 1, i.e 2^0
     int base = 1;
- 
+
     unsigned int temp = num;
     while (temp) {
         int last_digit = temp % 10;
         temp = temp / 10;
- 
+
         dec_value += last_digit * base;
- 
+
         base = base * 2;
     }
- 
+
     return dec_value;
 }
 
