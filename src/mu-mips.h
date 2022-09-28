@@ -90,7 +90,7 @@ typedef struct MIPS_INSTRUCT {
  int rd;
  uint32_t shamt;
  char* funct;
- unsigned long int immediate;
+ uint32_t immediate;
  char* address;
 } MIPS;
 

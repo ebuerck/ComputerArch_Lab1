@@ -350,62 +350,62 @@ void handle_instruction()
 	if(!strcmp(instruct.op, "ADD")){
 		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] + CURRENT_STATE.REGS[instruct.rt];
 	}
-	if(!strcmp(instruct.op, "ADDU")){
+	else if(!strcmp(instruct.op, "ADDU")){
 		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] + CURRENT_STATE.REGS[instruct.rt];
 	}
-	if(!strcmp(instruct.op, "ADDI")){
+	else if(!strcmp(instruct.op, "ADDI")){
 		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rs] + instruct.immediate;
 	}
-	if(!strcmp(instruct.op, "ADDIU")){
+	else if(!strcmp(instruct.op, "ADDIU")){
 		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rs] + instruct.immediate;
 	}
-	if(!strcmp(instruct.op, "SUB")){
+	else if(!strcmp(instruct.op, "SUB")){
 		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] - CURRENT_STATE.REGS[instruct.rt];
 	}
-	if(!strcmp(instruct.op, "SUBU")){
+	else if(!strcmp(instruct.op, "SUBU")){
 		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] - CURRENT_STATE.REGS[instruct.rt];
 	}
-	if(!strcmp(instruct.op, "MULT")){
+	else if(!strcmp(instruct.op, "MULT")){
 		// HOW SHOULD WE DO THIS????
 		CURRENT_STATE.HI = CURRENT_STATE.REGS[instruct.rs] * CURRENT_STATE.REGS[instruct.rt];
 	}
-	if(!strcmp(instruct.op, "MULTU")){
+	else if(!strcmp(instruct.op, "MULTU")){
 		// HOW SHOULD WE DO THIS????
 		CURRENT_STATE.HI = CURRENT_STATE.REGS[instruct.rs] * CURRENT_STATE.REGS[instruct.rt];
 	}
-	if(!strcmp(instruct.op, "DIV")){
+	else if(!strcmp(instruct.op, "DIV")){
 		CURRENT_STATE.HI = CURRENT_STATE.REGS[instruct.rs] % CURRENT_STATE.REGS[instruct.rt];
 		CURRENT_STATE.LO = CURRENT_STATE.REGS[instruct.rs] / CURRENT_STATE.REGS[instruct.rt];
 	}
-	if(!strcmp(instruct.op, "DIVU")){
+	else if(!strcmp(instruct.op, "DIVU")){
 		CURRENT_STATE.HI = CURRENT_STATE.REGS[instruct.rs] % CURRENT_STATE.REGS[instruct.rt];
 		CURRENT_STATE.LO = CURRENT_STATE.REGS[instruct.rs] / CURRENT_STATE.REGS[instruct.rt];
 	}
-	if(!strcmp(instruct.op, "AND")){
+	else if(!strcmp(instruct.op, "AND")){
 		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] & CURRENT_STATE.REGS[instruct.rt];
 	}
-	if(!strcmp(instruct.op, "ANDI")){
+	else if(!strcmp(instruct.op, "ANDI")){
 		// Check and see if this is what it actually should be
 		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rs] & instruct.immediate;
 	}
-	if(!strcmp(instruct.op, "OR")){
+	else if(!strcmp(instruct.op, "OR")){
 		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] | CURRENT_STATE.REGS[instruct.rt];
 	}
-	if(!strcmp(instruct.op, "ORI")){
+	else if(!strcmp(instruct.op, "ORI")){
 		// Check and see if this is what it actually should be
 		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rs] | instruct.immediate;
 	}
-	if(!strcmp(instruct.op, "XOR")){
+	else if(!strcmp(instruct.op, "XOR")){
 		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] ^ CURRENT_STATE.REGS[instruct.rt];
 	}
-	if(!strcmp(instruct.op, "XORI")){
+	else if(!strcmp(instruct.op, "XORI")){
 		// Check and see if this is what it actually should be
 		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rs] ^ instruct.immediate;
 	}
-	if(!strcmp(instruct.op, "NOR")){
+	else if(!strcmp(instruct.op, "NOR")){
 		CURRENT_STATE.REGS[instruct.rd] = !(CURRENT_STATE.REGS[instruct.rs] | CURRENT_STATE.REGS[instruct.rt]);
 	}
-	if(!strcmp(instruct.op, "SLT")){
+	else if(!strcmp(instruct.op, "SLT")){
 		if(instruct.rs < instruct.rt){
 			CURRENT_STATE.REGS[instruct.rd] = 1;
 		}
@@ -413,7 +413,7 @@ void handle_instruction()
 			CURRENT_STATE.REGS[instruct.rd] = 0;
 		}
 	}
-	if(!strcmp(instruct.op, "SLTI")){
+	else if(!strcmp(instruct.op, "SLTI")){
 		if(instruct.rs < instruct.immediate){
 			CURRENT_STATE.REGS[instruct.rd] = 1;
 		}
@@ -421,22 +421,31 @@ void handle_instruction()
 			CURRENT_STATE.REGS[instruct.rd] = 0;
 		}
 	}
-	if(!strcmp(instruct.op, "SLL")){
+	else if(!strcmp(instruct.op, "SLL")){
 		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] << instruct.shamt;
 	}
-	if(!strcmp(instruct.op, "SRL")){
+	else if(!strcmp(instruct.op, "SRL")){
 		// What is the difference between this and SRA
 		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] >> instruct.shamt;
 	}
-	if(!strcmp(instruct.op, "SRA")){
+	else if(!strcmp(instruct.op, "SRA")){
 		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] >> instruct.shamt;
 	}
-	//****************************** ALU INSTRUCTIONS ******************************
-	if(!strcmp(instruct.op, "LUI")){
+	//****************************** Load/Store INSTRUCTIONS ******************************  LW, LB, LH, SW, SB, SH, MFHI, MFLO, MTHI,MTLO
+	else if(!strcmp(instruct.op, "LUI")){
 		CURRENT_STATE.REGS[instruct.rt] = instruct.immediate;
 		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rt] << 16;
 	}
+	else if(!strcmp(instruct.op, "LW")){
+		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate;
+		uint32_t mem = mem_read_32(memAddress);
+		CURRENT_STATE.REGS[instruct.rt] = mem;
+	}
 	
+
+
+	//******************************* Control Flow INSTRUCTIONS *************************** BEQ, BNE, BLEZ, BLTZ, BGEZ, BGTZ, J, JR, JAL,JALR
+
 
 
 	NEXT_STATE = CURRENT_STATE;
