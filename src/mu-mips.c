@@ -445,8 +445,33 @@ void handle_instruction()
 
 
 	//******************************* Control Flow INSTRUCTIONS *************************** BEQ, BNE, BLEZ, BLTZ, BGEZ, BGTZ, J, JR, JAL,JALR
+    else if(!strcmp(instruct.op, "BEQ")) {
 
+    }
+    else if(!strcmp(instruct.op, "BNE")) {
 
+    }
+    else if(!strcmp(instruct.op, "BLEZ")) {
+
+    }
+    else if(!strcmp(instruct.op, "BGEZ")) {
+
+    }
+    else if(!strcmp(instruct.op, "BGTZ")) {
+
+    }
+	else if(!strcmp(instruct.op, "J")) {
+
+    }
+    else if(!strcmp(instruct.op, "JR")) {
+
+    }
+    else if(!strcmp(instruct.op, "JAL")) {
+
+    }
+    else if(!strcmp(instruct.op, "JALR")) {
+
+    }
 
 	NEXT_STATE = CURRENT_STATE;
 	NEXT_STATE.PC = CURRENT_STATE.PC + 4;
