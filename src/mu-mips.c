@@ -354,6 +354,7 @@ void handle_instruction()
 		CURRENT_STATE.REGS[instruct.rt] = instruct.immediate;
 		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rt] << 16;
 	}
+	
 
 	
 	NEXT_STATE = CURRENT_STATE;
