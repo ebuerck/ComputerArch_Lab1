@@ -512,13 +512,16 @@ void handle_instruction()
         CURRENT_STATE.PC += memAddress;
     }
     else if(!strcmp(instruct.op, "JR")) {
-
+        CURRENT_STATE.PC = CURRENT_STATE.REGS[instruct.rs];
     }
     else if(!strcmp(instruct.op, "JAL")) {
-
+        uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+        CURRENT_STATE.PC += memAddress;
+        CURRENT_STATE += 4;
     }
     else if(!strcmp(instruct.op, "JALR")) {
-
+        CURRENT_STATE.REG[31] = CURRENT_STATE.PC;
+        CURRENT_STATE.PC = CURRENT_STATE.REGS[instruct.rs];
     }
 
 	NEXT_STATE = CURRENT_STATE;
