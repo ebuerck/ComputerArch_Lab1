@@ -517,19 +517,30 @@ void handle_instruction()
     }
 	else if(!strcmp(instruct.op, "J")) {
         uint32_t memAddress = strtoul(instruct.address, NULL, 2);
-        CURRENT_STATE.PC += memAddress;
+		printf("the address is %x\n", memAddress);
+		CURRENT_STATE.PC = NEXT_STATE.PC;
+        NEXT_STATE.PC = (CURRENT_STATE.PC & 0xf0000000) | (memAddress << 2);
+		return;
     }
     else if(!strcmp(instruct.op, "JR")) {
-        CURRENT_STATE.PC = CURRENT_STATE.REGS[instruct.rs];
+		CURRENT_STATE.PC = NEXT_STATE.PC;
+        NEXT_STATE.PC = CURRENT_STATE.REGS[instruct.rs];
+		return;
     }
     else if(!strcmp(instruct.op, "JAL")) {
         uint32_t memAddress = strtoul(instruct.address, NULL, 2);
-        CURRENT_STATE.PC += memAddress;
-        CURRENT_STATE.PC += 4;
+		CURRENT_STATE.REGS[31] = CURRENT_STATE.PC << 2;
+
+        CURRENT_STATE.PC = NEXT_STATE.PC;
+        NEXT_STATE.PC = (CURRENT_STATE.PC & 0xf0000000) | (memAddress << 2);
+		return;
     }
     else if(!strcmp(instruct.op, "JALR")) {
-        CURRENT_STATE.REGS[31] = CURRENT_STATE.PC;
-        CURRENT_STATE.PC = CURRENT_STATE.REGS[instruct.rs];
+		CURRENT_STATE.REGS[31] = CURRENT_STATE.PC << 2;
+
+        CURRENT_STATE.PC = NEXT_STATE.PC;
+        NEXT_STATE.PC = CURRENT_STATE.REGS[instruct.rs];
+		return;
     }
 
 
@@ -537,7 +548,6 @@ void handle_instruction()
 	 else if(!strcmp(instruct.op, "SYSCALL")) {
 		if(CURRENT_STATE.REGS[2] == 0xA)
 			RUN_FLAG = FALSE;
-		return;
     }
 
 	NEXT_STATE = CURRENT_STATE;
