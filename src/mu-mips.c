@@ -479,49 +479,55 @@ void handle_instruction()
 	//******************************* Control Flow INSTRUCTIONS *************************** BEQ, BNE, BLEZ, BLTZ, BGEZ, BGTZ, J, JR, JAL,JALR
     else if(!strcmp(instruct.op, "BEQ")) {
 		 if(CURRENT_STATE.REGS[instruct.rt] == CURRENT_STATE.REGS[instruct.rs]){
-			 uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+			 uint32_t memAddress = strtoul(instruct.address, NULL, 2);
 			 CURRENT_STATE.PC += memAddress;
 		 }
     }
     else if(!strcmp(instruct.op, "BNE")) {
 		 if(CURRENT_STATE.REGS[instruct.rt] != CURRENT_STATE.REGS[instruct.rs]){
-			 uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+			 uint32_t memAddress = strtoul(instruct.address, NULL, 2);
 			 CURRENT_STATE.PC += memAddress;
 		 }
     }
     else if(!strcmp(instruct.op, "BLEZ")) {
 		 if(CURRENT_STATE.REGS[instruct.rt] <= 0){
-			 uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+			 uint32_t memAddress = strtoul(instruct.address, NULL, 2);
 			 CURRENT_STATE.PC += memAddress;
 		 }
     }
     else if(!strcmp(instruct.op, "BGEZ")) {
 		 if(CURRENT_STATE.REGS[instruct.rt] >= 0){
-			 uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+			 uint32_t memAddress = strtoul(instruct.address, NULL, 2);
 			 CURRENT_STATE.PC += memAddress;
 		 }
     }
     else if(!strcmp(instruct.op, "BGTZ")) {
 		 if(CURRENT_STATE.REGS[instruct.rt] > 0){
-			 uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+			 uint32_t memAddress = strtoul(instruct.address, NULL, 2);
 			 CURRENT_STATE.PC += memAddress;
 		 }
     }
 	else if(!strcmp(instruct.op, "J")) {
-        uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+        uint32_t memAddress = strtoul(instruct.address, NULL, 2);
         CURRENT_STATE.PC += memAddress;
     }
     else if(!strcmp(instruct.op, "JR")) {
         CURRENT_STATE.PC = CURRENT_STATE.REGS[instruct.rs];
     }
     else if(!strcmp(instruct.op, "JAL")) {
-        uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+        uint32_t memAddress = strtoul(instruct.address, NULL, 2);
         CURRENT_STATE.PC += memAddress;
         CURRENT_STATE.PC += 4;
     }
     else if(!strcmp(instruct.op, "JALR")) {
         CURRENT_STATE.REGS[31] = CURRENT_STATE.PC;
         CURRENT_STATE.PC = CURRENT_STATE.REGS[instruct.rs];
+    }
+
+
+	//******************************* Sys Call INSTRUCTIONS *************************** 
+	 else if(!strcmp(instruct.op, "SYSCALL")) {
+		CURRENT_STATE.REGS[2] = 10;
     }
 
 	NEXT_STATE = CURRENT_STATE;
@@ -935,7 +941,7 @@ void returnIFormat(char* instruction, MIPS* hold) {
 	}
 	else if(!strcmp(GetIFunction(op, rt), "BEQ") || !strcmp(GetIFunction(op, rt), "BNE"))
 	{
-		printf("%s %s, %s, x%lx\n",GetIFunction(op, rt),returnRegister(rs),returnRegister(rt), imm_hex);
+		printf("%s %s, %s, %ld\n",GetIFunction(op, rt),returnRegister(rs),returnRegister(rt), imm_hex);
 		hold->op = GetIFunction(op,rt);
 		hold->rs = convertBinarytoDecimal(rs);
 		hold->rt = convertBinarytoDecimal(rt);
@@ -947,7 +953,7 @@ void returnIFormat(char* instruction, MIPS* hold) {
 	}
 	else
 	{
-		printf("%s %s, %s, x%lx\n",GetIFunction(op, rt),returnRegister(rt), returnRegister(rs), imm_hex);
+		printf("%s %s, %s, %ld\n",GetIFunction(op, rt),returnRegister(rt), returnRegister(rs), imm_hex);
 		hold->op = GetIFunction(op,rt);
 		hold->rs = convertBinarytoDecimal(rs);
 		hold->rt = convertBinarytoDecimal(rt);
@@ -968,7 +974,11 @@ void returnJFormat(char* instruction, MIPS* hold) {
 	// read in the Jump Addresss
 	char address[27];
 	strncpy(address, &instruction[6], 26);
-	printf("%s %s\n", GetJFunction(op), address);
+	address[26] = '\0';
+	int hex = strtoul(address, NULL, 2);
+
+	printf("%s 0x%x\n", GetJFunction(op), hex);
+	
 	hold->op = GetJFunction(op);
 	hold->rs = -1;
 	hold->rt = -1;
@@ -1025,9 +1035,7 @@ void print_instruction(uint32_t addr){
 
 	sprintf(string,"%08x", instr);
 
-	// Check for syscall
-	if(instr == 0xC)
-		return;
+	
 
 	char fullbinay[33];
 	fullbinay[0] = '\0';
@@ -1037,6 +1045,14 @@ void print_instruction(uint32_t addr){
 	{
 		strcat(fullbinay, hex_to_binary(string[i]));
 	}
+
+	// Check for syscall
+	if(instr == 0xC){
+		junk.op = "SYSCALL";
+		printf("SYSCALL\n");
+		return;
+	}
+		
 
 	switch(FindFormat(fullbinay)) {
 		case 'R': {
