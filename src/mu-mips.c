@@ -306,7 +306,7 @@ void getSingleInstruct(MIPS* instrAddress){
 	uint32_t instr = mem_read_32(CURRENT_STATE.PC);
 
 	char string[9];
-	sprintf(string,"%8x", instr);
+	sprintf(string,"%08x", instr);
 
 	char fullbinary[33];
 	fullbinary[0] = '\0';
@@ -431,18 +431,50 @@ void handle_instruction()
 	else if(!strcmp(instruct.op, "SRA")){
 		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] >> instruct.shamt;
 	}
-	//****************************** Load/Store INSTRUCTIONS ******************************  LW, LB, LH, SW, SB, SH, MFHI, MFLO, MTHI,MTLO
+	//****************************** Load/Store INSTRUCTIONS ******************************
 	else if(!strcmp(instruct.op, "LUI")){
 		CURRENT_STATE.REGS[instruct.rt] = instruct.immediate;
 		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rt] << 16;
 	}
 	else if(!strcmp(instruct.op, "LW")){
-		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate;
+		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate + MEM_DATA_BEGIN;
 		uint32_t mem = mem_read_32(memAddress);
 		CURRENT_STATE.REGS[instruct.rt] = mem;
 	}
-
-
+	else if(!strcmp(instruct.op, "SW")){
+		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate + MEM_DATA_BEGIN;
+		mem_write_32(memAddress,(uint32_t)instruct.rt);
+	}
+	else if(!strcmp(instruct.op, "LB")){
+		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate + MEM_DATA_BEGIN;
+		uint32_t mem = mem_read_32(memAddress);
+		CURRENT_STATE.REGS[instruct.rt] = mem;
+	}
+	else if(!strcmp(instruct.op, "LH")){
+		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate + MEM_DATA_BEGIN;
+		uint32_t mem = mem_read_32(memAddress);
+		CURRENT_STATE.REGS[instruct.rt] = mem;
+	}
+	else if(!strcmp(instruct.op, "SB")){
+		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate + MEM_DATA_BEGIN;
+		mem_write_32(memAddress,(uint32_t)instruct.rt);
+	}
+	else if(!strcmp(instruct.op, "SH")){
+		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate + MEM_DATA_BEGIN;
+		mem_write_32(memAddress,(uint32_t)instruct.rt);
+	}
+	else if(!strcmp(instruct.op, "MFHI")){
+		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.HI;
+	}
+	else if(!strcmp(instruct.op, "MFLO")){
+		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.LO;
+	}
+	else if(!strcmp(instruct.op, "MTHI")){
+		CURRENT_STATE.HI = CURRENT_STATE.REGS[instruct.rs];
+	}
+	else if(!strcmp(instruct.op, "MTLO")){
+		CURRENT_STATE.LO = CURRENT_STATE.REGS[instruct.rs];
+	}
 
 	//******************************* Control Flow INSTRUCTIONS *************************** BEQ, BNE, BLEZ, BLTZ, BGEZ, BGTZ, J, JR, JAL,JALR
     else if(!strcmp(instruct.op, "BEQ")) {
@@ -674,78 +706,82 @@ char* GetIFunction(char* instruction, char* rt)
 	{
 		return "ADDI";
 	}
-	if(!strcmp(instruction, "001001"))
+	else if(!strcmp(instruction, "001001"))
 	{
 		return "ADDIU";
 	}
-	if(!strcmp(instruction, "001100"))
+	else if(!strcmp(instruction, "001100"))
 	{
 		return "ANDI";
 	}
-	if(!strcmp(instruction, "001101"))
+	else if(!strcmp(instruction, "001101"))
 	{
 		return "ORI";
 	}
-	if(!strcmp(instruction, "001110"))
+	else if(!strcmp(instruction, "001110"))
 	{
 		return "XORI";
 	}
-	if(!strcmp(instruction, "001010"))
+	else if(!strcmp(instruction, "001010"))
 	{
 		return "SLTI";
 	}
-	if(!strcmp(instruction, "100011"))
+	else if(!strcmp(instruction, "100011"))
 	{
 		return "LW";
 	}
-	if(!strcmp(instruction, "100000"))
+	else if(!strcmp(instruction, "100000"))
 	{
 		return "LB";
 	}
-	if(!strcmp(instruction, "100001"))
+	else if(!strcmp(instruction, "100001"))
 	{
 		return "LH";
 	}
-	if(!strcmp(instruction, "001111"))
+	else if(!strcmp(instruction, "001111"))
 	{
 		return "LUI";
 	}
-	if(!strcmp(instruction, "101011"))
+	else if(!strcmp(instruction, "101011"))
 	{
 		return "SW";
 	}
-	if(!strcmp(instruction, "101000"))
+	else if(!strcmp(instruction, "101000"))
 	{
 		return "SB";
 	}
-	if(!strcmp(instruction, "101001"))
+	else if(!strcmp(instruction, "101001"))
 	{
 		return "SH";
 	}
-	if(!strcmp(instruction, "000100"))
+	else if(!strcmp(instruction, "000100"))
 	{
 		return "BEQ";
 	}
-	if(!strcmp(instruction, "000101"))
+	else if(!strcmp(instruction, "000101"))
 	{
 		return "BNE";
 	}
-	if(!strcmp(instruction, "000110"))
+	else if(!strcmp(instruction, "000110"))
 	{
 		return "BLEZ";
 	}
-	if(!strcmp(instruction, "000001") && !strcmp(rt, "00000"))
+	else if(!strcmp(instruction, "000001") && !strcmp(rt, "00000"))
 	{
 		return "BLTZ";
 	}
-	if(!strcmp(instruction, "000001") && !strcmp(rt, "00001"))
+	else if(!strcmp(instruction, "000001") && !strcmp(rt, "00001"))
 	{
 		return "BGEZ";
 	}
-	if(!strcmp(instruction, "000111"))
+	else if(!strcmp(instruction, "000111"))
 	{
 		return "BGTZ";
 	}
+	else{
+		return "Instruction not found";
+	}
+
 	return NULL;
 }
 
@@ -808,14 +844,21 @@ void returnRFormat(char* instruction, MIPS* hold) {
 	strncpy(op, &instruction[0], 6);
 	op[6] = '\0';
 
-	// flag = true , print instruction and return NULL , else return isntruction
+	char shamnt[6];
+	strncpy(shamnt, &instruction[21],5);
+	shamnt[5] = '\0';
+
+	char func[7];
+	strncpy(func, &instruction[26],6);
+	func[6] = '\0';
+
 	printf("%s %s, %s, %s\n",GetRFunction(op),returnRegister(rd), returnRegister(rs), returnRegister(rt));
 	hold->op = GetRFunction(op);
 	hold->rd = convertBinarytoDecimal(rd);
 	hold->rs = convertBinarytoDecimal(rs);
 	hold->rt = convertBinarytoDecimal(rt);
-	hold->shamt = 0;
-	hold->funct = "";
+	hold->shamt = atoi(shamnt);
+	hold->funct = func;
 	hold->immediate = 0;
 }
 
@@ -965,9 +1008,9 @@ char* returnRegister(char* reg){
 void print_instruction(uint32_t addr){
 	//Read in the instructions
 	uint32_t instr = mem_read_32(addr);
-
 	char string[9];
-	sprintf(string,"%8x", instr);
+
+	sprintf(string,"%08x", instr);
 
 	// Check for syscall
 	if(instr == 0xC)
@@ -978,7 +1021,7 @@ void print_instruction(uint32_t addr){
 
 	MIPS junk;
 
-	for(int i = 0; i < 9; i++)
+	for(int i = 0; i < 8; i++)
 	{
 		strcat(fullbinay, hex_to_binary(string[i]));
 	}
