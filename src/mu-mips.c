@@ -845,8 +845,8 @@ void returnRFormat(char* instruction, MIPS* hold) {
 	strncpy(func, &instruction[26],6);
 	func[6] = '\0';
 
-	printf("%s %s, %s, %s\n",GetRFunction(op),returnRegister(rd), returnRegister(rs), returnRegister(rt));
-	hold->op = GetRFunction(op);
+	printf("%s %s, %s, %s\n",GetRFunction(func),returnRegister(rd), returnRegister(rs), returnRegister(rt));
+	hold->op = GetRFunction(func);
 	hold->rd = convertBinarytoDecimal(rd);
 	hold->rs = convertBinarytoDecimal(rs);
 	hold->rt = convertBinarytoDecimal(rt);
@@ -1013,7 +1013,6 @@ void print_instruction(uint32_t addr){
 	fullbinay[0] = '\0';
 
 	MIPS junk;
-
 	for(int i = 0; i < 8; i++)
 	{
 		strcat(fullbinay, hex_to_binary(string[i]));
