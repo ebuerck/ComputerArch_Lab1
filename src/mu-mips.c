@@ -525,7 +525,7 @@ void handle_instruction()
     }
 
 
-	//******************************* Control Flow INSTRUCTIONS *************************** 
+	//******************************* Sys Call INSTRUCTIONS *************************** 
 	 else if(!strcmp(instruct.op, "SYSCALL")) {
 		CURRENT_STATE.REGS[2] = 10;
     }
@@ -941,7 +941,7 @@ void returnIFormat(char* instruction, MIPS* hold) {
 	}
 	else if(!strcmp(GetIFunction(op, rt), "BEQ") || !strcmp(GetIFunction(op, rt), "BNE"))
 	{
-		printf("%s %s, %s, x%lx\n",GetIFunction(op, rt),returnRegister(rs),returnRegister(rt), imm_hex);
+		printf("%s %s, %s, %ld\n",GetIFunction(op, rt),returnRegister(rs),returnRegister(rt), imm_hex);
 		hold->op = GetIFunction(op,rt);
 		hold->rs = convertBinarytoDecimal(rs);
 		hold->rt = convertBinarytoDecimal(rt);
@@ -953,7 +953,7 @@ void returnIFormat(char* instruction, MIPS* hold) {
 	}
 	else
 	{
-		printf("%s %s, %s, x%lx\n",GetIFunction(op, rt),returnRegister(rt), returnRegister(rs), imm_hex);
+		printf("%s %s, %s, %ld\n",GetIFunction(op, rt),returnRegister(rt), returnRegister(rs), imm_hex);
 		hold->op = GetIFunction(op,rt);
 		hold->rs = convertBinarytoDecimal(rs);
 		hold->rt = convertBinarytoDecimal(rt);
