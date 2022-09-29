@@ -490,25 +490,38 @@ void handle_instruction()
 		 }
     }
     else if(!strcmp(instruct.op, "BLEZ")) {
-
+		 if(CURRENT_STATE.REGS[instruct.rt] <= 0){
+			 uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+			 CURRENT_STATE.PC += memAddress;
+		 }
     }
     else if(!strcmp(instruct.op, "BGEZ")) {
-
+		 if(CURRENT_STATE.REGS[instruct.rt] >= 0){
+			 uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+			 CURRENT_STATE.PC += memAddress;
+		 }
     }
     else if(!strcmp(instruct.op, "BGTZ")) {
-
+		 if(CURRENT_STATE.REGS[instruct.rt] > 0){
+			 uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+			 CURRENT_STATE.PC += memAddress;
+		 }
     }
 	else if(!strcmp(instruct.op, "J")) {
-
+        uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+        CURRENT_STATE.PC += memAddress;
     }
     else if(!strcmp(instruct.op, "JR")) {
-
+        CURRENT_STATE.PC = CURRENT_STATE.REGS[instruct.rs];
     }
     else if(!strcmp(instruct.op, "JAL")) {
-
+        uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+        CURRENT_STATE.PC += memAddress;
+        CURRENT_STATE.PC += 4;
     }
     else if(!strcmp(instruct.op, "JALR")) {
-
+        CURRENT_STATE.REGS[31] = CURRENT_STATE.PC;
+        CURRENT_STATE.PC = CURRENT_STATE.REGS[instruct.rs];
     }
 
 	NEXT_STATE = CURRENT_STATE;
