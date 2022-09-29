@@ -488,31 +488,41 @@ void handle_instruction()
     else if(!strcmp(instruct.op, "BEQ")) {
 		 if(CURRENT_STATE.REGS[instruct.rt] == CURRENT_STATE.REGS[instruct.rs]){
 			 uint32_t memAddress = strtoul(instruct.address, NULL, 2);
-			 CURRENT_STATE.PC += memAddress;
+			 CURRENT_STATE.PC = (memAddress << 2);
+			 NEXT_STATE = CURRENT_STATE;
+			 return;
 		 }
     }
     else if(!strcmp(instruct.op, "BNE")) {
 		 if(CURRENT_STATE.REGS[instruct.rt] != CURRENT_STATE.REGS[instruct.rs]){
 			 uint32_t memAddress = strtoul(instruct.address, NULL, 2);
-			 CURRENT_STATE.PC += memAddress;
+			 CURRENT_STATE.PC = (memAddress << 2);
+			 NEXT_STATE = CURRENT_STATE;
+			 return;
 		 }
     }
     else if(!strcmp(instruct.op, "BLEZ")) {
 		 if(CURRENT_STATE.REGS[instruct.rt] <= 0){
 			 uint32_t memAddress = strtoul(instruct.address, NULL, 2);
-			 CURRENT_STATE.PC += memAddress;
+			 CURRENT_STATE.PC = (memAddress << 2);
+			 NEXT_STATE = CURRENT_STATE;
+			 return;
 		 }
     }
     else if(!strcmp(instruct.op, "BGEZ")) {
 		 if(CURRENT_STATE.REGS[instruct.rt] >= 0){
 			 uint32_t memAddress = strtoul(instruct.address, NULL, 2);
-			 CURRENT_STATE.PC += memAddress;
+			 CURRENT_STATE.PC = (memAddress << 2);
+			 NEXT_STATE = CURRENT_STATE;
+			 return;
 		 }
     }
     else if(!strcmp(instruct.op, "BGTZ")) {
 		 if(CURRENT_STATE.REGS[instruct.rt] > 0){
 			 uint32_t memAddress = strtoul(instruct.address, NULL, 2);
-			 CURRENT_STATE.PC += memAddress;
+			 CURRENT_STATE.PC = (memAddress << 2);
+			 NEXT_STATE = CURRENT_STATE;
+			 return;
 		 }
     }
 	else if(!strcmp(instruct.op, "J")) {
