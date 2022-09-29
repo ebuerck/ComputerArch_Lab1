@@ -478,16 +478,10 @@ void handle_instruction()
 
 	//******************************* Control Flow INSTRUCTIONS *************************** BEQ, BNE, BLEZ, BLTZ, BGEZ, BGTZ, J, JR, JAL,JALR
     else if(!strcmp(instruct.op, "BEQ")) {
-<<<<<<< HEAD
-        if(CURRENT_STATE.REGS[instruct.rs] == CURRENT_STATE.REGS[instruct.rt]) {
-
-        }
-=======
 		 if(CURRENT_STATE.REGS[instruct.rt] == CURRENT_STATE.REGS[instruct.rs]){
 			 uint32_t memAddress = strtoul(instruct.address, NULL, 16);
 			 CURRENT_STATE.PC += memAddress;
 		 }
->>>>>>> 9918c60f163562639d49d2c154f7f60e5aabc7b0
     }
     else if(!strcmp(instruct.op, "BNE")) {
 		 if(CURRENT_STATE.REGS[instruct.rt] != CURRENT_STATE.REGS[instruct.rs]){
