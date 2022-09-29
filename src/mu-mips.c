@@ -437,30 +437,30 @@ void handle_instruction()
 		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rt] << 16;
 	}
 	else if(!strcmp(instruct.op, "LW")){
-		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate;
+		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate + MEM_DATA_BEGIN;
 		uint32_t mem = mem_read_32(memAddress);
 		CURRENT_STATE.REGS[instruct.rt] = mem;
 	}
 	else if(!strcmp(instruct.op, "SW")){
-		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate;
+		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate + MEM_DATA_BEGIN;
 		mem_write_32(memAddress,(uint32_t)instruct.rt);
 	}
 	else if(!strcmp(instruct.op, "LB")){
-		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate;
+		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate + MEM_DATA_BEGIN;
 		uint32_t mem = mem_read_32(memAddress);
 		CURRENT_STATE.REGS[instruct.rt] = mem;
 	}
 	else if(!strcmp(instruct.op, "LH")){
-		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate;
+		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate + MEM_DATA_BEGIN;
 		uint32_t mem = mem_read_32(memAddress);
 		CURRENT_STATE.REGS[instruct.rt] = mem;
 	}
 	else if(!strcmp(instruct.op, "SB")){
-		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate;
+		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate + MEM_DATA_BEGIN;
 		mem_write_32(memAddress,(uint32_t)instruct.rt);
 	} 
 	else if(!strcmp(instruct.op, "SH")){
-		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate;
+		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate + MEM_DATA_BEGIN;
 		mem_write_32(memAddress,(uint32_t)instruct.rt);
 	}
 	else if(!strcmp(instruct.op, "MFHI")){
