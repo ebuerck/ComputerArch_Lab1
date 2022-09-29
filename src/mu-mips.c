@@ -479,43 +479,43 @@ void handle_instruction()
 	//******************************* Control Flow INSTRUCTIONS *************************** BEQ, BNE, BLEZ, BLTZ, BGEZ, BGTZ, J, JR, JAL,JALR
     else if(!strcmp(instruct.op, "BEQ")) {
 		 if(CURRENT_STATE.REGS[instruct.rt] == CURRENT_STATE.REGS[instruct.rs]){
-			 uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+			 uint32_t memAddress = strtoul(instruct.address, NULL, 2);
 			 CURRENT_STATE.PC += memAddress;
 		 }
     }
     else if(!strcmp(instruct.op, "BNE")) {
 		 if(CURRENT_STATE.REGS[instruct.rt] != CURRENT_STATE.REGS[instruct.rs]){
-			 uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+			 uint32_t memAddress = strtoul(instruct.address, NULL, 2);
 			 CURRENT_STATE.PC += memAddress;
 		 }
     }
     else if(!strcmp(instruct.op, "BLEZ")) {
 		 if(CURRENT_STATE.REGS[instruct.rt] <= 0){
-			 uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+			 uint32_t memAddress = strtoul(instruct.address, NULL, 2);
 			 CURRENT_STATE.PC += memAddress;
 		 }
     }
     else if(!strcmp(instruct.op, "BGEZ")) {
 		 if(CURRENT_STATE.REGS[instruct.rt] >= 0){
-			 uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+			 uint32_t memAddress = strtoul(instruct.address, NULL, 2);
 			 CURRENT_STATE.PC += memAddress;
 		 }
     }
     else if(!strcmp(instruct.op, "BGTZ")) {
 		 if(CURRENT_STATE.REGS[instruct.rt] > 0){
-			 uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+			 uint32_t memAddress = strtoul(instruct.address, NULL, 2);
 			 CURRENT_STATE.PC += memAddress;
 		 }
     }
 	else if(!strcmp(instruct.op, "J")) {
-        uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+        uint32_t memAddress = strtoul(instruct.address, NULL, 2);
         CURRENT_STATE.PC += memAddress;
     }
     else if(!strcmp(instruct.op, "JR")) {
         CURRENT_STATE.PC = CURRENT_STATE.REGS[instruct.rs];
     }
     else if(!strcmp(instruct.op, "JAL")) {
-        uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+        uint32_t memAddress = strtoul(instruct.address, NULL, 2);
         CURRENT_STATE.PC += memAddress;
         CURRENT_STATE.PC += 4;
     }
