@@ -318,7 +318,7 @@ void getSingleInstruct(MIPS* instrAddress){
 
 	// Check for syscall
 	if(instr == 0xC){
-		junk.op = "SYSCALL";
+		instrAddress->op = "SYSCALL";
 		printf("SYSCALL\n");
 		return;
 	}
@@ -535,7 +535,9 @@ void handle_instruction()
 
 	//******************************* Sys Call INSTRUCTIONS *************************** 
 	 else if(!strcmp(instruct.op, "SYSCALL")) {
-		CURRENT_STATE.REGS[2] = 10;
+		if(CURRENT_STATE.REGS[2] == 0xA)
+			RUN_FLAG = FALSE;
+		return;
     }
 
 	NEXT_STATE = CURRENT_STATE;
