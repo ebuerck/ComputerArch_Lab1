@@ -318,7 +318,7 @@ void getSingleInstruct(MIPS* instrAddress){
 
 	// Check for syscall
 	if(instr == 0xC){
-		junk.op = "SYSCALL";
+		instrAddress.op = "SYSCALL";
 		printf("SYSCALL\n");
 		return;
 	}
