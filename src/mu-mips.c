@@ -316,6 +316,13 @@ void getSingleInstruct(MIPS* instrAddress){
 		strcat(fullbinary, hex_to_binary(string[i]));
 	}
 
+	// Check for syscall
+	if(instr == 0xC){
+		junk.op = "SYSCALL";
+		printf("SYSCALL\n");
+		return;
+	}
+
 	switch(FindFormat(fullbinary)) {
 		case 'R': {
 			returnRFormat(fullbinary,instrAddress);
@@ -366,8 +373,9 @@ void handle_instruction()
 		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] - CURRENT_STATE.REGS[instruct.rt];
 	}
 	else if(!strcmp(instruct.op, "MULT")){
-		// HOW SHOULD WE DO THIS????
-		CURRENT_STATE.HI = CURRENT_STATE.REGS[instruct.rs] * CURRENT_STATE.REGS[instruct.rt];
+		uint64_t product = CURRENT_STATE.REGS[instruct.rs] * CURRENT_STATE.REGS[instruct.rt];
+		CURRENT_STATE.HI = product >> 32;
+		CURRENT_STATE.LO = (product << 32) >> 32; 
 	}
 	else if(!strcmp(instruct.op, "MULTU")){
 		// HOW SHOULD WE DO THIS????
@@ -1035,8 +1043,6 @@ void print_instruction(uint32_t addr){
 
 	sprintf(string,"%08x", instr);
 
-	
-
 	char fullbinay[33];
 	fullbinay[0] = '\0';
 
@@ -1053,7 +1059,6 @@ void print_instruction(uint32_t addr){
 		return;
 	}
 		
-
 	switch(FindFormat(fullbinay)) {
 		case 'R': {
 			returnRFormat(fullbinay,&junk);
