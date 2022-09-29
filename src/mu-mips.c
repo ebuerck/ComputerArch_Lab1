@@ -307,7 +307,7 @@ void getSingleInstruct(MIPS* instrAddress){
 
 	char string[9];
 	sprintf(string,"%08x", instr);
-		
+
 	char fullbinary[33];
 	fullbinary[0] = '\0';
 
@@ -431,7 +431,7 @@ void handle_instruction()
 	else if(!strcmp(instruct.op, "SRA")){
 		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.REGS[instruct.rs] >> instruct.shamt;
 	}
-	//****************************** Load/Store INSTRUCTIONS ****************************** 
+	//****************************** Load/Store INSTRUCTIONS ******************************
 	else if(!strcmp(instruct.op, "LUI")){
 		CURRENT_STATE.REGS[instruct.rt] = instruct.immediate;
 		CURRENT_STATE.REGS[instruct.rt] = CURRENT_STATE.REGS[instruct.rt] << 16;
@@ -458,7 +458,7 @@ void handle_instruction()
 	else if(!strcmp(instruct.op, "SB")){
 		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate + MEM_DATA_BEGIN;
 		mem_write_32(memAddress,(uint32_t)instruct.rt);
-	} 
+	}
 	else if(!strcmp(instruct.op, "SH")){
 		uint32_t memAddress = (uint32_t)instruct.rs + instruct.immediate + MEM_DATA_BEGIN;
 		mem_write_32(memAddress,(uint32_t)instruct.rt);
@@ -468,19 +468,32 @@ void handle_instruction()
 	}
 	else if(!strcmp(instruct.op, "MFLO")){
 		CURRENT_STATE.REGS[instruct.rd] = CURRENT_STATE.LO;
-	}	
+	}
 	else if(!strcmp(instruct.op, "MTHI")){
 		CURRENT_STATE.HI = CURRENT_STATE.REGS[instruct.rs];
 	}
 	else if(!strcmp(instruct.op, "MTLO")){
 		CURRENT_STATE.LO = CURRENT_STATE.REGS[instruct.rs];
 	}
+
 	//******************************* Control Flow INSTRUCTIONS *************************** BEQ, BNE, BLEZ, BLTZ, BGEZ, BGTZ, J, JR, JAL,JALR
     else if(!strcmp(instruct.op, "BEQ")) {
+<<<<<<< HEAD
+        if(CURRENT_STATE.REGS[instruct.rs] == CURRENT_STATE.REGS[instruct.rt]) {
 
+        }
+=======
+		 if(CURRENT_STATE.REGS[instruct.rt] == CURRENT_STATE.REGS[instruct.rs]){
+			 uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+			 CURRENT_STATE.PC += memAddress;
+		 }
+>>>>>>> 9918c60f163562639d49d2c154f7f60e5aabc7b0
     }
     else if(!strcmp(instruct.op, "BNE")) {
-
+		 if(CURRENT_STATE.REGS[instruct.rt] != CURRENT_STATE.REGS[instruct.rs]){
+			 uint32_t memAddress = strtoul(instruct.address, NULL, 16);
+			 CURRENT_STATE.PC += memAddress;
+		 }
     }
     else if(!strcmp(instruct.op, "BLEZ")) {
 
@@ -1004,7 +1017,7 @@ void print_instruction(uint32_t addr){
 	char string[9];
 
 	sprintf(string,"%08x", instr);
-	
+
 	// Check for syscall
 	if(instr == 0xC)
 		return;
