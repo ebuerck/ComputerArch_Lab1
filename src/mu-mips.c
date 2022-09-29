@@ -446,7 +446,9 @@ void handle_instruction()
 
 	//******************************* Control Flow INSTRUCTIONS *************************** BEQ, BNE, BLEZ, BLTZ, BGEZ, BGTZ, J, JR, JAL,JALR
     else if(!strcmp(instruct.op, "BEQ")) {
+        if(CURRENT_STATE.REGS[instruct.rs] == CURRENT_STATE.REGS[instruct.rt]) {
 
+        }
     }
     else if(!strcmp(instruct.op, "BNE")) {
 
