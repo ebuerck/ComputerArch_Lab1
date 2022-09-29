@@ -9,7 +9,7 @@
 #include "mu-mips.h"
 
 /***************************************************************/
-/* Print out a list of commands available                                                                  */
+/* Print out a list of commands available. */
 /***************************************************************/
 void help() {
 	printf("------------------------------------------------------------------\n\n");
@@ -29,7 +29,7 @@ void help() {
 }
 
 /***************************************************************/
-/* Read a 32-bit word from memory                                                                            */
+/* Read a 32-bit word from memory. */
 /***************************************************************/
 uint32_t mem_read_32(uint32_t address)
 {
@@ -47,7 +47,7 @@ uint32_t mem_read_32(uint32_t address)
 }
 
 /***************************************************************/
-/* Write a 32-bit word to memory                                                                                */
+/* Write a 32-bit word to memory. */
 /***************************************************************/
 void mem_write_32(uint32_t address, uint32_t value)
 {
@@ -66,7 +66,7 @@ void mem_write_32(uint32_t address, uint32_t value)
 }
 
 /***************************************************************/
-/* Execute one cycle                                                                                                              */
+/* Execute one cycle. */
 /***************************************************************/
 void cycle() {
 	handle_instruction();
@@ -75,7 +75,7 @@ void cycle() {
 }
 
 /***************************************************************/
-/* Simulate MIPS for n cycles                                                                                       */
+/* Simulate MIPS for n cycles. */
 /***************************************************************/
 void run(int num_cycles) {
 
@@ -96,7 +96,7 @@ void run(int num_cycles) {
 }
 
 /***************************************************************/
-/* simulate to completion                                                                                               */
+/* simulate to completion. */
 /***************************************************************/
 void runAll() {
 	if (RUN_FLAG == FALSE) {
@@ -112,7 +112,7 @@ void runAll() {
 }
 
 /***************************************************************/
-/* Dump a word-aligned region of memory to the terminal                              */
+/* Dump a word-aligned region of memory to the terminal. */
 /***************************************************************/
 void mdump(uint32_t start, uint32_t stop) {
 	uint32_t address;
@@ -128,7 +128,7 @@ void mdump(uint32_t start, uint32_t stop) {
 }
 
 /***************************************************************/
-/* Dump current values of registers to the teminal                                              */
+/* Dump current values of registers to the teminal. */
 /***************************************************************/
 void rdump() {
 	int i;
@@ -150,7 +150,7 @@ void rdump() {
 }
 
 /***************************************************************/
-/* Read a command from standard input.                                                               */
+/* Read a command from standard input. */
 /***************************************************************/
 void handle_command() {
 	char buffer[20];
@@ -235,7 +235,7 @@ void handle_command() {
 }
 
 /***************************************************************/
-/* reset registers/memory and reload program                                                    */
+/* reset registers/memory and reload program. */
 /***************************************************************/
 void reset() {
 	int i;
@@ -262,7 +262,7 @@ void reset() {
 }
 
 /***************************************************************/
-/* Allocate and set memory to zero                                                                            */
+/* Allocate and set memory to zero. */
 /***************************************************************/
 void init_memory() {
 	int i;
@@ -274,7 +274,7 @@ void init_memory() {
 }
 
 /**************************************************************/
-/* load program into memory                                                                                      */
+/* load program into memory. */
 /**************************************************************/
 void load_program() {
 	FILE * fp;
@@ -337,7 +337,7 @@ void getSingleInstruct(MIPS* instrAddress){
 }
 
 /************************************************************/
-/* decode and execute instruction                                                                     */
+/* decode and execute instruction. */
 /************************************************************/
 void handle_instruction()
 {
@@ -476,8 +476,33 @@ void handle_instruction()
 		CURRENT_STATE.LO = CURRENT_STATE.REGS[instruct.rs];
 	}
 	//******************************* Control Flow INSTRUCTIONS *************************** BEQ, BNE, BLEZ, BLTZ, BGEZ, BGTZ, J, JR, JAL,JALR
+    else if(!strcmp(instruct.op, "BEQ")) {
 
+    }
+    else if(!strcmp(instruct.op, "BNE")) {
 
+    }
+    else if(!strcmp(instruct.op, "BLEZ")) {
+
+    }
+    else if(!strcmp(instruct.op, "BGEZ")) {
+
+    }
+    else if(!strcmp(instruct.op, "BGTZ")) {
+
+    }
+	else if(!strcmp(instruct.op, "J")) {
+
+    }
+    else if(!strcmp(instruct.op, "JR")) {
+
+    }
+    else if(!strcmp(instruct.op, "JAL")) {
+
+    }
+    else if(!strcmp(instruct.op, "JALR")) {
+
+    }
 
 	NEXT_STATE = CURRENT_STATE;
 	NEXT_STATE.PC = CURRENT_STATE.PC + 4;
@@ -485,7 +510,7 @@ void handle_instruction()
 }
 
 /************************************************************/
-/* Initialize Memory                                                                                                    */
+/* Initialize Memory. */
 /************************************************************/
 void initialize() {
 	init_memory();
@@ -495,7 +520,7 @@ void initialize() {
 }
 
 /************************************************************/
-/* Print the program loaded into memory (in MIPS assembly format)    */
+/* Print the program loaded into memory (in MIPS assembly format). */
 /************************************************************/
 void print_program(){
 	int i;
@@ -971,7 +996,7 @@ char* returnRegister(char* reg){
 }
 
 /************************************************************/
-/* Print the instruction at given memory address (in MIPS assembly format)    */
+/* Print the instruction at given memory address (in MIPS assembly format). */
 /************************************************************/
 void print_instruction(uint32_t addr){
 	//Read in the instructions
@@ -1015,7 +1040,7 @@ void print_instruction(uint32_t addr){
 }
 
 /***************************************************************/
-/* main                                                                                                                                   */
+/* Main function. */
 /***************************************************************/
 int main(int argc, char *argv[]) {
 	printf("\n**************************\n");
