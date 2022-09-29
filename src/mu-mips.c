@@ -478,16 +478,10 @@ void handle_instruction()
 
 	//******************************* Control Flow INSTRUCTIONS *************************** BEQ, BNE, BLEZ, BLTZ, BGEZ, BGTZ, J, JR, JAL,JALR
     else if(!strcmp(instruct.op, "BEQ")) {
-<<<<<<< HEAD
-        if(CURRENT_STATE.REGS[instruct.rs] == CURRENT_STATE.REGS[instruct.rt]) {
-
-        }
-=======
 		 if(CURRENT_STATE.REGS[instruct.rt] == CURRENT_STATE.REGS[instruct.rs]){
 			 uint32_t memAddress = strtoul(instruct.address, NULL, 16);
 			 CURRENT_STATE.PC += memAddress;
 		 }
->>>>>>> 9918c60f163562639d49d2c154f7f60e5aabc7b0
     }
     else if(!strcmp(instruct.op, "BNE")) {
 		 if(CURRENT_STATE.REGS[instruct.rt] != CURRENT_STATE.REGS[instruct.rs]){
@@ -515,6 +509,12 @@ void handle_instruction()
     }
     else if(!strcmp(instruct.op, "JALR")) {
 
+    }
+
+
+	//******************************* Control Flow INSTRUCTIONS *************************** 
+	 else if(!strcmp(instruct.op, "SYSCALL")) {
+		CURRENT_STATE.REGS[2] = 10;
     }
 
 	NEXT_STATE = CURRENT_STATE;
@@ -961,7 +961,11 @@ void returnJFormat(char* instruction, MIPS* hold) {
 	// read in the Jump Addresss
 	char address[27];
 	strncpy(address, &instruction[6], 26);
-	printf("%s %s\n", GetJFunction(op), address);
+	address[26] = '\0';
+	int hex = strtoul(address, NULL, 2);
+
+	printf("%s 0x%x\n", GetJFunction(op), hex);
+	
 	hold->op = GetJFunction(op);
 	hold->rs = -1;
 	hold->rt = -1;
@@ -1018,9 +1022,7 @@ void print_instruction(uint32_t addr){
 
 	sprintf(string,"%08x", instr);
 
-	// Check for syscall
-	if(instr == 0xC)
-		return;
+	
 
 	char fullbinay[33];
 	fullbinay[0] = '\0';
@@ -1030,6 +1032,14 @@ void print_instruction(uint32_t addr){
 	{
 		strcat(fullbinay, hex_to_binary(string[i]));
 	}
+
+	// Check for syscall
+	if(instr == 0xC){
+		junk.op = "SYSCALL";
+		printf("SYSCALL\n");
+		return;
+	}
+		
 
 	switch(FindFormat(fullbinay)) {
 		case 'R': {
