@@ -378,8 +378,9 @@ void handle_instruction()
 		CURRENT_STATE.LO = (product << 32) >> 32; 
 	}
 	else if(!strcmp(instruct.op, "MULTU")){
-		// HOW SHOULD WE DO THIS????
-		CURRENT_STATE.HI = CURRENT_STATE.REGS[instruct.rs] * CURRENT_STATE.REGS[instruct.rt];
+		uint64_t product = CURRENT_STATE.REGS[instruct.rs] * CURRENT_STATE.REGS[instruct.rt];
+		CURRENT_STATE.HI = product >> 32;
+		CURRENT_STATE.LO = (product << 32) >> 32; 
 	}
 	else if(!strcmp(instruct.op, "DIV")){
 		CURRENT_STATE.HI = CURRENT_STATE.REGS[instruct.rs] % CURRENT_STATE.REGS[instruct.rt];
